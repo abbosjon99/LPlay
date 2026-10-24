@@ -20,6 +20,7 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
 import com.andrerinas.openheadunit.App
+import com.andrerinas.openheadunit.HostIntegration
 import com.andrerinas.openheadunit.aap.protocol.messages.ClusterDisplayServices
 import com.andrerinas.openheadunit.utils.AppLog
 import com.andrerinas.openheadunit.utils.AppPermissions
@@ -270,8 +271,50 @@ internal class ClusterMapScreen(
             show(context)
         }
 
+        // LPlay: the host's cluster window (HostIntegration.clusterRoute) carries the map instead of a BYD presentation.
+        private var hostOwner: Any? = null
+        private var hostSurface: Surface? = null
+
+        /** True when the host's cluster window handles the map (or the driver turned it off), so no BYD window is looked for. */
+        private fun showHostWindow(context: Context): Boolean {
+            val hook = HostIntegration.clusterRoute ?: return false
+            val app = context.applicationContext
+            val settings = App.provide(app).settings
+            if (!settings.lplayClusterWindow) return false
+            if (!settings.clusterMapEnabled || !hook.enabled(app)) return true
+            if (hostOwner == null) {
+                hostOwner = app
+                hook.bind(app) { surface -> onHostSurface(app, surface) }
+                hook.setStreamActive(true)
+            }
+            hook.ensure(app)
+            return true
+        }
+
+        private fun onHostSurface(context: Context, surface: Surface?) {
+            val decoder = App.provide(context).clusterVideoDecoder
+            if (surface != null) {
+                hostSurface = surface
+                AppLog.i("ClusterMap: the host's cluster window gave a surface")
+                decoder.setSurface(surface)
+                // A codec on a new surface needs a keyframe before it can draw anything.
+                requestKeyframe(context)
+            } else {
+                hostSurface?.let { old -> decoder.stopIfCurrentSurface(old, "cluster window closed") }
+                hostSurface = null
+            }
+        }
+
+        private fun dismissHostWindow() {
+            val owner = hostOwner ?: return
+            hostOwner = null
+            HostIntegration.clusterRoute?.stop(owner)
+            hostSurface = null
+        }
+
         /** Shows the dashboard map while a session with it enabled is up. Safe to call repeatedly. */
         fun show(context: Context) {
+            if (showHostWindow(context)) return // LPlay
             showContext = java.lang.ref.WeakReference(context)
             decoderContext = java.lang.ref.WeakReference(context.applicationContext)
             val settings = App.provide(context).settings
@@ -322,6 +365,7 @@ internal class ClusterMapScreen(
 
         /** The session ended. */
         fun dismiss() {
+            dismissHostWindow() // LPlay
             closeWindow(keepSurface = false)
             // A surface kept for a move that never found its window is released here.
             releaseSharedSurface("session ended")

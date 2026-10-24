@@ -52,7 +52,8 @@ abstract class ClusterWindowActivity : Activity() {
         // Absolute right, not END: the slot is on the right whatever the app's language direction is.
         window.setGravity(Gravity.TOP or Gravity.RIGHT)
         window.setLayout(size.x, size.y)
-        val texture = ClusterTextureView(this, size.x, size.y) { next ->
+        val geometry = route.geometry
+        val texture = ClusterTextureView(this, geometry?.bufferWidth ?: size.x, geometry?.bufferHeight ?: size.y, geometry) { next ->
             surface?.let { route.detach(this, it) }
             surface = next
             if (next != null && route.activity.get() === this) route.attach(this, next)

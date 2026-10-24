@@ -32,6 +32,9 @@ class ClusterRoute(
     /** The driver's choices, read when the route needs them. The engine's adapter sets this. */
     @Volatile var config: (Context) -> ClusterConfig = { ClusterConfig.OFF }
 
+    /** How the engine's frame maps onto the window; null when the frame is exactly the window's size (CarPlay). */
+    @Volatile var geometry: ClusterStreamGeometry? = null
+
     var activity = WeakReference<ClusterWindowActivity>(null)
     var launchPending = false
         private set

@@ -141,6 +141,29 @@ class Settings(private val context: Context) {
         get() = prefs.getInt("cluster-map-width", 0)
         set(value) { prefs.edit().putInt("cluster-map-width", value).apply() }
 
+    /**
+     * LPlay: the dashboard map goes to the host's cluster window and is a square 720x720 picture (Leapmotor C01). The host
+     * writes it each session with [clusterMapEnabled]; default off.
+     */
+    var lplayClusterWindow: Boolean
+        get() = prefs.getBoolean("lplay-cluster-window", false)
+        set(value) { prefs.edit().putBoolean("lplay-cluster-window", value).apply() }
+
+    /** LPlay: 0 asks the phone for a 720x720 picture with side margins, 1 for a full 16:9 picture of which the window shows the middle. */
+    var lplayClusterMode: Int
+        get() = prefs.getInt("lplay-cluster-mode", 0)
+        set(value) { prefs.edit().putInt("lplay-cluster-mode", value).apply() }
+
+    /** LPlay: the display the driver picked for the cluster window, or -1 for the cluster's known identity. */
+    var lplayClusterDisplay: Int
+        get() = prefs.getInt("lplay-cluster-display", -1)
+        set(value) { prefs.edit().putInt("lplay-cluster-display", value).apply() }
+
+    /** LPlay: how far the cluster window's left edge fades, in percent of its width (0 = off). */
+    var lplayClusterFade: Int
+        get() = prefs.getInt("lplay-cluster-fade", 20)
+        set(value) { prefs.edit().putInt("lplay-cluster-fade", value).apply() }
+
     /** The cluster theme picked on the car, which decides where its map window is (DiLink 5.1). */
     var clusterTheme: Int
         get() = prefs.getInt("cluster-theme", 0)

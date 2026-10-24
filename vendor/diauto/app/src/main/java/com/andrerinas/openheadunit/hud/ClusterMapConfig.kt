@@ -167,6 +167,35 @@ internal object ClusterMapConfig {
     }
 
     /**
+     * LPlay: the Leapmotor cluster window is a 720x720 square at the right of the 1920x720 panel. The phone is asked for a
+     * 1280x720 codec frame (the only size that holds it) and either draws the square with 280 px margins at both sides
+     * (mode 0), or the whole 16:9 frame, of which the window shows the middle 720 px (mode 1, for phones that refuse a
+     * width margin on a cluster sink). Either way the window shows the frame's columns [SQUARE_VIEW_LEFT, +SQUARE_SIDE).
+     */
+    const val SQUARE_SIDE = 720
+    const val SQUARE_VIEW_LEFT = 280
+
+    fun squareProfile(mode: Int, detail: Detail): Profile {
+        val sideMargin = SQUARE_VIEW_LEFT * 2
+        val inset = if (mode == 1) SQUARE_VIEW_LEFT else 0
+        // The car marker keeps inside this box: 10 % in from the left and right of the square, a bit above the middle.
+        val side = SQUARE_SIDE * 10 / 100
+        val contentWidth = if (mode == 1) 1280 else SQUARE_SIDE
+        return Profile(
+            codecResolution = RES_1280x720,
+            codecWidth = 1280,
+            codecHeight = 720,
+            widthMargin = if (mode == 1) 0 else sideMargin,
+            heightMargin = 0,
+            contentWidth = contentWidth,
+            contentHeight = SQUARE_SIDE,
+            density = detail.dpi,
+            contentInsets = Insets(top = SQUARE_SIDE * BASE_TOP / 100, bottom = SQUARE_SIDE * BASE_BOTTOM / 100,
+                left = inset + side, right = inset + side),
+        )
+    }
+
+    /**
      * The safe area in content pixels for marker steps [markerX] and [markerY]. With a measured
      * [window] it starts as that window, so the car marker sits in the middle of what the cluster
      * shows; the full-width Map window keeps clear of the trip readouts on both sides.

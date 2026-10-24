@@ -48,6 +48,7 @@ object AaSessionSettings {
         wifi: WifiEnvironment? = null,
         picture: PictureChoice = PicturePolicy.ENGINE_DEFAULTS,
         moduleRoute: ExternalBtTransportPolicy.Route? = null,
+        cluster: uz.carhelper.lplay.cluster.ClusterConfig = uz.carhelper.lplay.cluster.ClusterConfig.OFF, // LPlay
     ): AaSessionValues {
         var problem: String? = null
         val values = buildMap<String, Any> {
@@ -82,9 +83,16 @@ object AaSessionSettings {
             // BYD's HUD/cluster outputs only on a BYD (DA§12.2).
             put("byd-navigation-enabled", profile == VehicleProfile.BYD_DILINK && settings.bydDirections)
             // DiAuto 0.3.12's BYD dashboard map (a second video stream announced to the phone and a
-            // window on the cluster display). Off everywhere: CarLink has no setting for it yet,
-            // and it is untested beyond DiLink 5.1. A BYD-only setting can turn it on later.
-            put("cluster-map-enabled", false)
+            // window on the cluster display). Off everywhere but the Leapmotor profile (below): it is untested
+            // beyond DiLink 5.1, and LPlay never enables the BYD windows.
+            // LPlay: on the Leapmotor C01 the dashboard map goes to the cluster window as a square 720x720 picture, when
+            // the driver turned it on. The window runs in ":aa" and reads these keys there (AaClusterHook).
+            val leapmotor = profile == VehicleProfile.LEAPMOTOR_C01
+            put("cluster-map-enabled", leapmotor && cluster.enabled)
+            put("lplay-cluster-window", leapmotor)
+            put("lplay-cluster-mode", cluster.aaMode)
+            put("lplay-cluster-display", cluster.displayId)
+            put("lplay-cluster-fade", cluster.fadePercent)
             putPicture(settings, panelDensityDpi, picture)
             put("night-mode", when (settings.dayNight) {
                 DayNight.AUTOMATIC -> 0 // sunrise/sunset

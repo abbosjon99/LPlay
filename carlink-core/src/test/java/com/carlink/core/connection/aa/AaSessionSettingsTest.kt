@@ -121,6 +121,31 @@ class AaSessionSettingsTest {
         assertEquals(false, leapmotor["music-via-bluetooth"])
     }
 
+    @Test fun theClusterMapIsAnnouncedOnlyForTheLeapmotorProfileWhenTheDriverTurnedItOn() {
+        val on = uz.carhelper.lplay.cluster.ClusterConfig(enabled = true, displayId = 3, fadePercent = 35, aaMode = 1)
+        fun run(profile: VehicleProfile, cluster: uz.carhelper.lplay.cluster.ClusterConfig) =
+            AaSessionSettings.values(base, Transport.WIRELESS, WirelessPath.WIFI_DIRECT, profile, "My Car", 320, cluster = cluster).values
+
+        val leapmotor = run(VehicleProfile.LEAPMOTOR_C01, on)
+        assertEquals(true, leapmotor["cluster-map-enabled"])
+        assertEquals(true, leapmotor["lplay-cluster-window"])
+        assertEquals(3, leapmotor["lplay-cluster-display"])
+        assertEquals(35, leapmotor["lplay-cluster-fade"])
+        assertEquals(1, leapmotor["lplay-cluster-mode"])
+
+        // Switched off by the driver: not announced to the phone, though the window setting stays for the profile.
+        val off = run(VehicleProfile.LEAPMOTOR_C01, uz.carhelper.lplay.cluster.ClusterConfig.OFF)
+        assertEquals(false, off["cluster-map-enabled"])
+        assertEquals(true, off["lplay-cluster-window"])
+
+        // Any other profile never announces it, whatever the saved choice is.
+        for (profile in listOf(VehicleProfile.GENERIC, VehicleProfile.BYD_DILINK)) {
+            val other = run(profile, on)
+            assertEquals(profile.name, false, other["cluster-map-enabled"])
+            assertEquals(profile.name, false, other["lplay-cluster-window"])
+        }
+    }
+
     @Test fun pictureAndSizeKeepV1sTranslations() {
         val v = values(settings = base.copy(picture = Picture.BALANCED)).values
         assertEquals(2, v["resolutionId"])

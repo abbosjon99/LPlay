@@ -1,6 +1,7 @@
 package uz.carhelper.lplay.cluster
 
 import android.content.Context
+import android.graphics.Matrix
 import android.graphics.SurfaceTexture
 import android.view.Surface
 import android.view.TextureView
@@ -14,6 +15,7 @@ class ClusterTextureView(
     context: Context,
     private val bufferWidth: Int,
     private val bufferHeight: Int,
+    private val geometry: ClusterStreamGeometry? = null,
     private val onSurface: (Surface?) -> Unit,
 ) : TextureView(context), java.io.Closeable {
     private var output: Surface? = null
@@ -24,16 +26,25 @@ class ClusterTextureView(
             override fun onSurfaceTextureAvailable(texture: SurfaceTexture, width: Int, height: Int) {
                 releaseOutput()
                 texture.setDefaultBufferSize(bufferWidth, bufferHeight)
+                applyCrop(width, height)
                 output = Surface(texture).also(onSurface)
             }
 
-            override fun onSurfaceTextureSizeChanged(texture: SurfaceTexture, width: Int, height: Int) = Unit
+            override fun onSurfaceTextureSizeChanged(texture: SurfaceTexture, width: Int, height: Int) = applyCrop(width, height)
             override fun onSurfaceTextureUpdated(texture: SurfaceTexture) = Unit
             override fun onSurfaceTextureDestroyed(texture: SurfaceTexture): Boolean {
                 releaseOutput()
                 return true
             }
         }
+    }
+
+    /** Shows only the window's part of a bigger frame (Android Auto); a frame of the window's size needs nothing. */
+    private fun applyCrop(width: Int, height: Int) {
+        val g = geometry ?: return
+        if (width <= 0 || height <= 0) return
+        val m = g.cropMatrix(width, height)
+        setTransform(Matrix().apply { setScale(m[0], m[1]); postTranslate(m[2], m[3]) })
     }
 
     private fun releaseOutput() {

@@ -16,7 +16,9 @@ import com.andrerinas.openheadunit.utils.Settings
 internal object ClusterDisplayServices {
 
 
-    fun profile(context: android.content.Context, settings: Settings): ClusterMapConfig.Profile = ClusterMapConfig.profile(
+    fun profile(context: android.content.Context, settings: Settings): ClusterMapConfig.Profile = if (settings.lplayClusterWindow) { // LPlay
+        ClusterMapConfig.squareProfile(settings.lplayClusterMode, ClusterMapConfig.Detail.of(settings.clusterMapDetail))
+    } else ClusterMapConfig.profile(
         ClusterMapConfig.Size.of(settings.clusterMapSize),
         ClusterMapConfig.Detail.of(settings.clusterMapDetail),
         settings.clusterMarkerX,

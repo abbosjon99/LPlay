@@ -90,6 +90,15 @@ object HostIntegration {
     @JvmStatic
     var claimHiddenBottomStrip: Boolean = true
 
+    /**
+     * LPlay: the host's own cluster window for the dashboard map (Leapmotor C01), used when the host wrote the cluster
+     * settings for it ([com.andrerinas.openheadunit.utils.Settings.lplayClusterWindow]). Null keeps DiAuto's BYD routes.
+     * Lives in the ":aa" process, next to the cluster video decoder.
+     */
+    @Volatile
+    @JvmStatic
+    var clusterRoute: AaClusterRouteHook? = null
+
     /** CarLink: what [onEngineEvent] reports. Detail strings are `key=value` pairs joined by `;`. */
     enum class EngineEvent {
         /** The Wi-Fi radio is off, so the Wi-Fi Direct route cannot start (API 29+ cannot turn it on). */
@@ -186,4 +195,25 @@ object HostIntegration {
     @Volatile
     @JvmStatic
     var automaticDensityDpi: ((deviceDpi: Int, visibleWidthPx: Int, visibleHeightPx: Int) -> Int)? = null
+}
+
+/**
+ * LPlay: what the host's cluster window offers the engine, the same calls the Android Auto dashboard map needs of any
+ * window: a Surface for the cluster video decoder, started and stopped with the session. Main thread only.
+ */
+interface AaClusterRouteHook {
+    /** Whether the driver turned the cluster map on (the cluster settings the host wrote for this session). */
+    fun enabled(context: Context): Boolean
+
+    /** The engine owns the route from now on; [callback] gets the window's Surface (null when it goes away). */
+    fun bind(owner: Any, callback: (android.view.Surface?) -> Unit)
+
+    /** Opens the window unless one is there or being opened. */
+    fun ensure(host: Context)
+
+    /** Whether the cluster stream is on the window now. */
+    fun setStreamActive(active: Boolean)
+
+    /** [owner] no longer needs the window (the session ended). */
+    fun stop(owner: Any)
 }

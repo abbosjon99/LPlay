@@ -53,6 +53,7 @@ class CarLinkApplication : App() {
         HostIntegration.appName = name
         HostIntegration.serviceChannelName = getString(R.string.carlink_notification_channel_android_auto)
         HostIntegration.mediaSessionTag = "LPlay Android Auto"
+        com.carlink.core.connection.aa.AaClusterHook.install() // LPlay: the Leapmotor cluster window (":aa" process)
         HostIntegration.toastHandler = { _, text, forced ->
             Log.i(TOAST_TAG, "Android Auto engine toast forced=$forced: $text")
             !forced

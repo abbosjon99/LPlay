@@ -220,6 +220,13 @@
     <string name="lplay_cluster_fade_sheet_body">How far into the map the fade reaches, as a share of its width.</string>
     <string name="lplay_cluster_fade_off">Off</string>
     <string name="lplay_cluster_fade_value">%1$d %%</string>
+    <string name="lplay_cluster_aa">Android Auto cluster picture</string>
+    <string name="lplay_cluster_aa_detail">How the phone is asked to draw the cluster map. Android Auto’s cluster map is untested on this car.</string>
+    <string name="lplay_cluster_aa_sheet_body">Android Auto only offers fixed picture sizes. Try the first choice; if the cluster stays empty, use the second.</string>
+    <string name="lplay_cluster_aa_margins">Square with side margins</string>
+    <string name="lplay_cluster_aa_margins_detail">The phone draws exactly the 720x720 window</string>
+    <string name="lplay_cluster_aa_crop">Full picture, middle shown</string>
+    <string name="lplay_cluster_aa_crop_detail">For phones that refuse side margins: the phone draws 16:9 and the window shows its middle</string>
     <string name="lplay_cluster_test">Cluster test card</string>
     <string name="lplay_cluster_test_detail">Shows a numbered grid on the cluster for 20 seconds, to check which display it is and what part shows. Park the car first.</string>
     <string name="lplay_cluster_test_show">Show</string>
