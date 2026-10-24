@@ -33,6 +33,8 @@
             <category android:name="android.intent.category.BROWSABLE" />
             <data android:scheme="https" />
         </intent>
+        <!-- LPlay: the car's own multimedia app tells a Leapmotor head unit from a phone (VehicleProfile.detect). -->
+        <package android:name="com.leapmotor.multimedia" />
     </queries>
 
     <application

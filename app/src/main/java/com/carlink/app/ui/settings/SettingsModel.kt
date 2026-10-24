@@ -192,6 +192,7 @@ internal fun vehicleLabel(profile: VehicleProfile): String = stringResource(
     when (profile) {
         VehicleProfile.GENERIC -> R.string.carlink_settings_car_generic
         VehicleProfile.BYD_DILINK -> R.string.carlink_settings_car_byd
+        VehicleProfile.LEAPMOTOR_C01 -> R.string.lplay_settings_car_leapmotor // LPlay
     },
 )
 

@@ -77,7 +77,7 @@ object AaSessionSettings {
             // and leaves no music at all (DA§4.5 item 4). DiLink's own default is true (DA§12 #9).
             put("music-via-bluetooth", when (profile) {
                 VehicleProfile.BYD_DILINK -> true
-                VehicleProfile.GENERIC -> settings.soundThroughCarBluetooth
+                VehicleProfile.GENERIC, VehicleProfile.LEAPMOTOR_C01 -> settings.soundThroughCarBluetooth // LPlay
             })
             // BYD's HUD/cluster outputs only on a BYD (DA§12.2).
             put("byd-navigation-enabled", profile == VehicleProfile.BYD_DILINK && settings.bydDirections)

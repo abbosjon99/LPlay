@@ -206,16 +206,19 @@
     <string name="carlink_settings_floating_switcher_permission_detail">Android needs this before LPlay can show the button</string>
     <!-- Settings › Car › Car brand (core settings/CarBrand), also the setup's car step. Brand names come from CarBrand.displayName. -->
     <string name="carlink_settings_car_brand">Car brand</string>
-    <string name="carlink_settings_car_brand_detail">BYD adds its DiLink extras; other brands only label this car</string>
+    <string name="carlink_settings_car_brand_detail">Leapmotor C01 adds the dashboard map and leaves the wheel buttons to the car; other cars are generic</string>
     <string name="carlink_settings_car_brand_sheet_body">Pick the make of this car. CarPlay and Android Auto work the same in every car.</string>
     <!-- What the detection found: a generic screen, or a BYD DiLink unit. -->
     <string name="carlink_settings_car_generic">Generic</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
+    <string name="lplay_settings_car_leapmotor">Leapmotor C01</string>
+    <string name="lplay_settings_car_leapmotor_extras">Dashboard map</string>
+    <string name="lplay_settings_car_explain_leapmotor">Leapmotor C01 sends the dashboard map to the instrument cluster and leaves the steering-wheel buttons, dock and voice to the car’s own music app.</string>
     <string name="carlink_settings_car_detected">Detected: %1$s</string>
     <!-- The car brand when the driver never chose one and the screen is not a BYD. -->
     <string name="carlink_settings_car_not_chosen">Other / Generic</string>
     <string name="carlink_settings_car_other">Other / not listed</string>
-    <string name="carlink_settings_car_popular">Popular in India</string>
+    <string name="carlink_settings_car_popular">Your car</string>
     <string name="carlink_settings_car_luxury">Luxury</string>
     <string name="carlink_settings_car_motorcycles">Motorcycles</string>
     <string name="carlink_settings_car_byd_extras">DiLink extras</string>

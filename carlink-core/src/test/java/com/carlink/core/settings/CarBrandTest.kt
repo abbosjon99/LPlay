@@ -24,7 +24,33 @@ class CarBrandTest {
 
     @Test fun onlyBydImpliesTheBydProfile() {
         assertEquals(listOf(CarBrand.BYD), CarBrand.entries.filter { it.profile == VehicleProfile.BYD_DILINK })
-        CarBrand.entries.filter { it != CarBrand.BYD }.forEach { assertEquals(it.name, VehicleProfile.GENERIC, it.profile) }
+        // LPlay: Leapmotor has a profile of its own; every other make is generic.
+        CarBrand.entries.filter { it != CarBrand.BYD && it != CarBrand.LEAPMOTOR }
+            .forEach { assertEquals(it.name, VehicleProfile.GENERIC, it.profile) }
+    }
+
+    @Test fun onlyLeapmotorImpliesTheLeapmotorProfile() {
+        assertEquals(listOf(CarBrand.LEAPMOTOR), CarBrand.entries.filter { it.profile == VehicleProfile.LEAPMOTOR_C01 })
+        assertEquals(CarBrand.LEAPMOTOR, CarBrand.detected(VehicleProfile.LEAPMOTOR_C01))
+        assertEquals(CarBrand.LEAPMOTOR, CarBrand.fromProfile(VehicleProfile.LEAPMOTOR_C01))
+        assertEquals(CarBrand.OTHER, CarBrand.fromProfile(VehicleProfile.GENERIC))
+    }
+
+    @Test fun theLeapmotorProfileIsDetectedFromTheCarsMultimediaAppOrTheFingerprint() {
+        assertEquals(VehicleProfile.LEAPMOTOR_C01, VehicleProfile.detect(multimediaInstalled = true, fingerprint = "qti/msmnile_gvmq/x"))
+        assertEquals(VehicleProfile.LEAPMOTOR_C01, VehicleProfile.detect(multimediaInstalled = false, fingerprint = "Leapmotor/C01/x"))
+        assertEquals(VehicleProfile.GENERIC, VehicleProfile.detect(multimediaInstalled = false, fingerprint = "qti/msmnile_gvmq/x"))
+        // LPlay does not look for BYD.
+        assertEquals(VehicleProfile.GENERIC, VehicleProfile.detect(multimediaInstalled = false, fingerprint = "BYD-AUTO/DiLink/x"))
+    }
+
+    @Test fun choosingLeapmotorOnADetectedLeapmotorIsNoChange() {
+        detected = VehicleProfile.LEAPMOTOR_C01
+        assertNull(store().chosen())
+        assertEquals(VehicleProfile.LEAPMOTOR_C01, store().profile())
+        assertFalse(store().set(CarBrand.LEAPMOTOR))
+        assertTrue("Other turns the Leapmotor profile off", store().set(CarBrand.OTHER))
+        assertEquals(VehicleProfile.GENERIC, store().profile())
     }
 
     @Test fun popularBrandsComeFirstThenLuxuryThenOther() {

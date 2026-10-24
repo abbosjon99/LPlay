@@ -257,22 +257,13 @@ internal fun SettingsSheetHost(key: String?, ui: SettingsUi, actions: SettingsAc
 internal fun CarBrandPicker(selected: CarBrand?, detected: CarBrand?, onSelect: (CarBrand) -> Unit, note: Boolean = true) {
     val dimens = CarLinkTokens.dimens
     val current = brandInEffect(selected, detected)
-    val listed = CarBrand.entries.filter { it != CarBrand.OTHER }
-    val popular = listed.filter { !it.luxury && !it.motorcycle }
-    val luxury = listed.filter { it.luxury }
-    val motorcycles = listed.filter { it.motorcycle }
+    // LPlay: this build is for the Leapmotor C01, so the picker offers Leapmotor and "Other" (the generic profile).
+    // The other makes stay in CarBrand, which keeps upstream's code and tests as they are.
+    val popular = listOf(CarBrand.LEAPMOTOR)
     Column(Modifier.selectableGroup()) {
         com.carlink.app.ui.premium.Eyebrow(stringResource(R.string.carlink_settings_car_popular))
         Spacer(Modifier.height(dimens.targetGap))
         BrandGrid(popular, current, onSelect)
-        Spacer(Modifier.height(dimens.gutter))
-        com.carlink.app.ui.premium.Eyebrow(stringResource(R.string.carlink_settings_car_luxury))
-        Spacer(Modifier.height(dimens.targetGap))
-        BrandGrid(luxury, current, onSelect)
-        Spacer(Modifier.height(dimens.gutter))
-        com.carlink.app.ui.premium.Eyebrow(stringResource(R.string.carlink_settings_car_motorcycles))
-        Spacer(Modifier.height(dimens.targetGap))
-        BrandGrid(motorcycles, current, onSelect)
         Spacer(Modifier.height(dimens.targetGap * 2))
         BrandGrid(listOf(CarBrand.OTHER), current, onSelect)
     }
@@ -294,6 +285,7 @@ internal fun CarBrandNote(selected: CarBrand?, detected: CarBrand?, showChoice: 
     val dimens = CarLinkTokens.dimens
     val scheme = MaterialTheme.colorScheme
     val byd = brandInEffect(selected, detected).profile == VehicleProfile.BYD_DILINK
+    val leapmotor = brandInEffect(selected, detected).profile == VehicleProfile.LEAPMOTOR_C01 // LPlay
     if (showChoice) {
         // The setup's grid may scroll the lit tile out of view; its name stays here.
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -305,10 +297,14 @@ internal fun CarBrandNote(selected: CarBrand?, detected: CarBrand?, showChoice: 
         Spacer(Modifier.height(dimens.targetGap * 1.5f))
     }
     Row(verticalAlignment = Alignment.Top) {
-        Icon(painterResource(if (byd) R.drawable.carlink_ic_info_filled else R.drawable.carlink_ic_info), null,
-            Modifier.padding(top = 2.dp).size(dimens.iconTertiary + 4.dp), tint = if (byd) scheme.primary else scheme.onSurfaceVariant)
+        Icon(painterResource(if (byd || leapmotor) R.drawable.carlink_ic_info_filled else R.drawable.carlink_ic_info), null,
+            Modifier.padding(top = 2.dp).size(dimens.iconTertiary + 4.dp), tint = if (byd || leapmotor) scheme.primary else scheme.onSurfaceVariant)
         Spacer(Modifier.width(if (isCar) 14.dp else 10.dp))
-        Text(stringResource(if (byd) R.string.carlink_settings_car_explain_byd else R.string.carlink_settings_car_explain_other),
+        Text(stringResource(when {
+                byd -> R.string.carlink_settings_car_explain_byd
+                leapmotor -> R.string.lplay_settings_car_explain_leapmotor
+                else -> R.string.carlink_settings_car_explain_other
+            }),
             style = MaterialTheme.typography.bodyMedium, color = scheme.onSurfaceVariant)
     }
     Spacer(Modifier.height(dimens.targetGap * 1.5f))
@@ -353,6 +349,10 @@ private fun BrandTile(brand: CarBrand, selected: Boolean, narrow: Boolean, onCli
                     color = if (selected) scheme.primary else scheme.onSurface)
                 if (brand.profile == VehicleProfile.BYD_DILINK) {
                     Text(stringResource(R.string.carlink_settings_car_byd_extras), style = MaterialTheme.typography.labelMedium,
+                        color = scheme.onSurfaceVariant)
+                }
+                if (brand.profile == VehicleProfile.LEAPMOTOR_C01) { // LPlay
+                    Text(stringResource(R.string.lplay_settings_car_leapmotor_extras), style = MaterialTheme.typography.labelMedium,
                         color = scheme.onSurfaceVariant)
                 }
             }

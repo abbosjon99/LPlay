@@ -38,6 +38,8 @@ enum class CarBrand(val displayName: String, val profile: VehicleProfile = Vehic
     CITROEN("Citroën"),
     JEEP("Jeep"),
     BYD("BYD", VehicleProfile.BYD_DILINK),
+    // LPlay: the only make this build is for; the brand picker lists it and "Other" and nothing else.
+    LEAPMOTOR("Leapmotor", VehicleProfile.LEAPMOTOR_C01),
     MERCEDES_BENZ("Mercedes-Benz", luxury = true),
     BMW("BMW", luxury = true),
     AUDI("Audi", luxury = true),
@@ -64,11 +66,15 @@ enum class CarBrand(val displayName: String, val profile: VehicleProfile = Vehic
         /** The brand this screen identifies as when the driver never chose: BYD on a BYD DiLink unit, else none. */
         fun detect(context: Context): CarBrand? = detected(VehicleProfile.detect(context))
 
-        /** [BYD] for [VehicleProfile.BYD_DILINK]; null otherwise (a generic screen says nothing about the car). */
-        fun detected(profile: VehicleProfile): CarBrand? = if (profile == VehicleProfile.BYD_DILINK) BYD else null
+        /** [BYD] for [VehicleProfile.BYD_DILINK], [LEAPMOTOR] for [VehicleProfile.LEAPMOTOR_C01]; null otherwise (a generic screen says nothing about the car). */
+        fun detected(profile: VehicleProfile): CarBrand? = when (profile) {
+            VehicleProfile.BYD_DILINK -> BYD
+            VehicleProfile.LEAPMOTOR_C01 -> LEAPMOTOR
+            VehicleProfile.GENERIC -> null
+        }
 
         /** What a choice stored as a [VehicleProfile] (before brands existed) means now. */
-        fun fromProfile(profile: VehicleProfile): CarBrand = if (profile == VehicleProfile.BYD_DILINK) BYD else OTHER
+        fun fromProfile(profile: VehicleProfile): CarBrand = detected(profile) ?: OTHER
     }
 }
 
