@@ -168,6 +168,8 @@ class CarPlayAdapter internal constructor(
                 marks.edit().putBoolean("forget_ipv6_guess", true).apply()
             }
             CarPlayHostIntegration.vehicleIntegrations = profile == VehicleProfile.BYD_DILINK
+            // LPlay: the car owns the wheel; CarPlay keeps its transport-only media session and now-playing notification.
+            CarPlayHostIntegration.transportOnlyMedia = profile.transportOnlyMedia
             CarPlayHostIntegration.onHostState = HostStates::dispatch
             CarPlayWaitingView.install()
             // A BYD restores a journaled cluster/HUD output at app start, as DiPlay's own home does

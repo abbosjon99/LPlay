@@ -98,7 +98,11 @@ object AaSessionSettings {
             put("gps-navigation", settings.sendCarLocation)
             // The learned steering-wheel buttons, in DiAuto's own keymap (logical-physical), which
             // CommManager.sendKey applies to every key route. CarLink owns the keymap: always written.
-            put("key-codes", WheelKeys.diAutoKeyCodes(settings.wheelKeys))
+            put("key-codes", WheelKeys.diAutoKeyCodes(if (profile.transportOnlyMedia) emptyMap() else settings.wheelKeys)) // LPlay
+            // LPlay: on the Leapmotor C01 the car owns the wheel; the session is transport-only and mirrors the phone's track
+            // into the now-playing notification (AapService.setupMediaSession, BackgroundNotification).
+            put("lplay-transport-only-media", profile.transportOnlyMedia)
+            put("sync-media-session-aa-metadata", profile.transportOnlyMedia)
             // The engine's Bluetooth route for mode 3 (design/EXTERNAL_BLUETOOTH.md); empty = Android's own.
             put(ExternalBtTransportPolicy.HOST_ROUTE_KEY, if (transport == Transport.WIRELESS) moduleRoute?.name.orEmpty() else "")
 

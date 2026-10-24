@@ -105,6 +105,22 @@ class AaSessionSettingsTest {
         assertEquals(false, values(settings = base.copy(bydDirections = false), profile = VehicleProfile.BYD_DILINK).values["byd-navigation-enabled"])
     }
 
+    @Test fun theLeapmotorProfileLeavesTheWheelToTheCarAndMirrorsTheTrack() {
+        val keys = mapOf(com.carlink.core.settings.WheelAction.VOICE to 1001, com.carlink.core.settings.WheelAction.ANSWER to 1002)
+        val generic = values(settings = base.copy(wheelKeys = keys)).values
+        assertEquals(false, generic["lplay-transport-only-media"])
+        assertEquals(false, generic["sync-media-session-aa-metadata"])
+        assertTrue((generic["key-codes"] as Set<*>).isNotEmpty())
+
+        val leapmotor = values(settings = base.copy(wheelKeys = keys, bydDirections = true), profile = VehicleProfile.LEAPMOTOR_C01).values
+        assertEquals(true, leapmotor["lplay-transport-only-media"])
+        assertEquals(true, leapmotor["sync-media-session-aa-metadata"])
+        assertEquals(emptySet<String>(), leapmotor["key-codes"])
+        // Like a generic car: no BYD outputs, music over the engine's own path unless the driver chose Bluetooth.
+        assertEquals(false, leapmotor["byd-navigation-enabled"])
+        assertEquals(false, leapmotor["music-via-bluetooth"])
+    }
+
     @Test fun pictureAndSizeKeepV1sTranslations() {
         val v = values(settings = base.copy(picture = Picture.BALANCED)).values
         assertEquals(2, v["resolutionId"])

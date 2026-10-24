@@ -79,7 +79,7 @@ internal object CarPlayMediaKeys {
         }
         appContext = context.applicationContext
         controller = next
-        GeelyWheelKeys.start(context)
+        if (!CarPlayHostIntegration.transportOnlyMedia) GeelyWheelKeys.start(context) // LPlay
         com.shilapi.xcertplay.media.AmbientMusicController.claimPlaybackOwner(next)
         next.playbackListener = { playing ->
             com.shilapi.xcertplay.media.AmbientMusicController.phonePlaybackChanged(next, playing)
@@ -181,6 +181,7 @@ internal object CarPlayMediaKeys {
             controller?.let { com.shilapi.xcertplay.media.AmbientMusicController.albumColorChanged(it, result?.color) }
             controller?.let(::updateInitialAlbumRecovery)
             session?.setMetadata(androidMetadata(nowPlaying, shownArtworkLocked()))
+            refreshNotificationLocked() // LPlay
         }
     }
 
@@ -406,7 +407,31 @@ internal object CarPlayMediaKeys {
                 )
                 .build(),
         )
+        refreshNotificationLocked() // LPlay
     }
+
+    /**
+     * LPlay: the now-playing notification follows the session (same track, artwork and play state). Only posted
+     * when [CarPlayHostIntegration.transportOnlyMedia] is on; the service notification stays as it was otherwise.
+     */
+    private fun refreshNotificationLocked() {
+        if (!CarPlayHostIntegration.transportOnlyMedia) return
+        val context = appContext ?: return
+        val playing = if (nowPlaying.elapsedMillis != null || nowPlaying.title != null) nowPlaying.playing else mediaAudioActive
+        NowPlayingNotification.update(
+            context,
+            NowPlayingNotification.State(
+                token = session?.sessionToken,
+                title = nowPlaying.title,
+                artist = nowPlaying.artist,
+                artwork = artwork,
+                playing = playing,
+            ),
+        )
+    }
+
+    /** LPlay: a transport command from outside the media session, such as the now-playing notification's buttons. */
+    internal fun transport(index: Int, source: String) = send(index, source)
 
     private fun send(index: Int, source: String) {
         // While the car's video player is on screen the wheel drives it: a CarPlay play/pause would
@@ -545,6 +570,8 @@ internal class CarPlayMediaCallback(
     private val send: (index: Int, source: String) -> Unit,
 ) : MediaSession.Callback() {
     override fun onMediaButtonEvent(mediaButtonIntent: Intent): Boolean {
+        // LPlay: the car owns the hardware buttons; only controller transport commands (onPlay and the rest) act.
+        if (CarPlayHostIntegration.transportOnlyMedia) return true
         @Suppress("DEPRECATION")
         val event = mediaButtonIntent.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT) ?: return false
         val index = CarPlayMediaButton.forKeyCode(event.keyCode, experimentalDiLink3Keys())

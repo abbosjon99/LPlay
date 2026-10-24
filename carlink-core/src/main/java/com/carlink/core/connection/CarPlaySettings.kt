@@ -117,6 +117,7 @@ object CarPlaySettingsPolicy {
             InterfaceSize.CUSTOM -> null
         }
         val byd = profile == VehicleProfile.BYD_DILINK
+        val transportOnly = profile.transportOnlyMedia // LPlay: learned wheel buttons do nothing on the Leapmotor C01
         return CarPlayEngineSettings(
             wirelessMode = when (path) {
                 WirelessPath.SAME_WIFI -> WirelessHotspotMode.EXISTING_WIFI
@@ -160,9 +161,9 @@ object CarPlaySettingsPolicy {
                 oemLabel = if (byd) DIPLAY_DEFAULT_OEM_LABEL else brandName,
                 replaceableOemLabels = setOf(DIPLAY_DEFAULT_OEM_LABEL, brandName, ""),
             ),
-            wheelKeyRemap = WheelKeys.remap(settings.wheelKeys),
+            wheelKeyRemap = if (transportOnly) emptyMap() else WheelKeys.remap(settings.wheelKeys),
             // Only CarLink sets it (no CarLink screen shows DiPlay's switch): on exactly when a call key is learned.
-            callKeys = WheelKeys.needsCarPlayCallKeys(settings.wheelKeys),
+            callKeys = !transportOnly && WheelKeys.needsCarPlayCallKeys(settings.wheelKeys),
         )
     }
 

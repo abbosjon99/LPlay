@@ -34,6 +34,16 @@ object CarPlayHostIntegration {
     @JvmStatic
     var keyRemap: Map<Int, Int> = emptyMap()
 
+    /**
+     * LPlay: the car owns the steering-wheel, dock and voice buttons (LP Music on the Leapmotor C01), so CarPlay
+     * only keeps its transport-only media session and the now-playing notification: no key handling in the
+     * projection window, no wheel-key accessibility service, no call or wheel helpers, no hardware media-button
+     * events. Transport commands from a media controller (LP Music, the system UI) still reach the iPhone.
+     */
+    @Volatile
+    @JvmStatic
+    var transportOnlyMedia: Boolean = false
+
     /** [event] with its key code replaced per [keyRemap], or [event] itself. */
     internal fun remapKey(event: android.view.KeyEvent): android.view.KeyEvent {
         val code = keyRemap[event.keyCode] ?: return event

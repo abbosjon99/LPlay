@@ -87,7 +87,8 @@ class DeviceEnvironment(
     override fun onEngaged(engine: Engine?) {
         callMicrophone.setWatching(engine != null)
         if (preferences.rootMode) kotlin.concurrent.thread(name = "carlink-root") { com.carlink.core.settings.RootMode.projecting(engine != null) }
-        val state = if (engine == Engine.ANDROID_AUTO) PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+        // LPlay: on the Leapmotor C01 the car's own music app keeps the media buttons, so these stay disabled.
+        val state = if (engine == Engine.ANDROID_AUTO && !Connection.vehicleProfile(app).transportOnlyMedia) PackageManager.COMPONENT_ENABLED_STATE_ENABLED
         else PackageManager.COMPONENT_ENABLED_STATE_DISABLED
         ANDROID_AUTO_KEY_RECEIVERS.forEach { name ->
             val component = ComponentName(app, name)

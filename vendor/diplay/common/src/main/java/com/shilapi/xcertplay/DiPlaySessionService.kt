@@ -11,6 +11,7 @@ import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
+import com.shilapi.xcertplay.airplay.CarPlayMediaButton
 import com.shilapi.xcertplay.host.R
 
 /** Keeps an explicitly started connection alive when another car app is in the foreground. */
@@ -21,6 +22,12 @@ class DiPlaySessionService : Service() {
             CarPlayBackgroundSession.stop()
             stopSelf()
             return START_NOT_STICKY
+        }
+        // LPlay: the now-playing notification's buttons send the same transport commands a media controller does.
+        when (intent?.action) {
+            NowPlayingNotification.ACTION_PREVIOUS -> { CarPlayMediaKeys.transport(CarPlayMediaButton.PREVIOUS, "notification"); return START_NOT_STICKY }
+            NowPlayingNotification.ACTION_NEXT -> { CarPlayMediaKeys.transport(CarPlayMediaButton.NEXT, "notification"); return START_NOT_STICKY }
+            NowPlayingNotification.ACTION_PLAY_PAUSE -> { CarPlayMediaKeys.transport(CarPlayMediaButton.PLAY_PAUSE, "notification"); return START_NOT_STICKY }
         }
         val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val manager = getSystemService(NotificationManager::class.java)
@@ -33,12 +40,17 @@ class DiPlaySessionService : Service() {
         }
         val open = PendingIntent.getActivity(this, 0, Intent(this, CarPlayHostActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val stop = PendingIntent.getService(this, 1, Intent(this, DiPlaySessionService::class.java).setAction(ACTION_STOP), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        val notification = builder
+        val plainNotification = builder
             .setSmallIcon(R.drawable.ic_diplay_notification)
             .setContentTitle(CarPlayHostIntegration.appName) // CarLink
             .setContentText("CarPlay connection running")
             .setContentIntent(open).setOngoing(true)
             .addAction(Notification.Action.Builder(null, "Disconnect", stop).build()).build()
+        // LPlay: on the Leapmotor C01 the service notification is the now-playing media notification.
+        val notification = if (CarPlayHostIntegration.transportOnlyMedia) {
+            NowPlayingNotification.serviceStarted()
+            NowPlayingNotification.build(this)
+        } else plainNotification
         if (Build.VERSION.SDK_INT >= 29) {
             var types = ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE
             if (Build.VERSION.SDK_INT >= 30 && checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
@@ -53,6 +65,10 @@ class DiPlaySessionService : Service() {
             startForeground(1, notification, types)
         } else startForeground(1, notification)
         return START_NOT_STICKY
+    }
+    override fun onDestroy() {
+        NowPlayingNotification.serviceStopped() // LPlay
+        super.onDestroy()
     }
     override fun onTaskRemoved(rootIntent: Intent?) {
         // BYD's recents force-stops the package ~10 ms after removing the task: end guidance first.

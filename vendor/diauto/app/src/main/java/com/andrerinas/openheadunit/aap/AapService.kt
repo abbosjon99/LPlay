@@ -1016,7 +1016,8 @@ class AapService : Service(), UsbReceiver.Listener {
         // Silent audio hack removed to prevent mixing/resampling stuttering issues
 
         // Register the comprehensive steering wheel key receiver
-        App.provide(this).carKeysManager.registerReceivers(this)
+        // LPlay: the vendor key receivers abort ordered key broadcasts; the car's own music app must keep them.
+        if (!settings.transportOnlyMedia) App.provide(this).carKeysManager.registerReceivers(this)
 
         // Reactivate the existing MediaSession (created in onCreate, kept alive across disconnects)
         safeMediaSessionCall { it.isActive = true }
@@ -1102,11 +1103,13 @@ class AapService : Service(), UsbReceiver.Listener {
         val mbr = ComponentName(this, MediaButtonReceiver::class.java)
         mediaSession = MediaSessionCompat(this, HostIntegration.mediaSessionTag, mbr, null).apply { // CarLink
             setFlags(
-                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or
+                // LPlay: no hardware media buttons for the car's transport-only session.
+                (if (settings.transportOnlyMedia) 0 else MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS) or
                 MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
             )
             setCallback(object : MediaSessionCompat.Callback() {
                 override fun onMediaButtonEvent(mediaButtonEvent: Intent?): Boolean {
+                    if (settings.transportOnlyMedia) return true // LPlay: only transport commands act
                     val keyEvent = mediaButtonEvent?.let { IntentCompat.getParcelableExtra(it, Intent.EXTRA_KEY_EVENT, android.view.KeyEvent::class.java) }
 
                     if (keyEvent != null) {

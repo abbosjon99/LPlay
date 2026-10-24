@@ -170,6 +170,17 @@ class Settings(private val context: Context) {
             prefs.edit().putBoolean(KEY_SYNC_MEDIA_SESSION_AA_METADATA, value).apply()
         }
 
+    /**
+     * LPlay: the car owns the steering-wheel, dock and voice buttons (LP Music on the Leapmotor C01). The media
+     * session keeps its transport callbacks (play, pause, next, previous, stop) but ignores hardware media-button
+     * events, and the vendor key receivers are not registered. Written by the host each session; default off.
+     */
+    var transportOnlyMedia: Boolean
+        get() = prefs.getBoolean("lplay-transport-only-media", false)
+        set(value) {
+            prefs.edit().putBoolean("lplay-transport-only-media", value).apply()
+        }
+
     var nightMode: NightMode
         get() {
             val value = prefs.getInt("night-mode", 0)

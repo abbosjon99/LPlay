@@ -820,7 +820,7 @@ class CarPlayHostActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         NavigationWidgetUpdater.attach(applicationContext)
-        CarPlayCallKeys.install(applicationContext)
+        if (!CarPlayHostIntegration.transportOnlyMedia) CarPlayCallKeys.install(applicationContext) // LPlay
         CenterMapOverlay.requestShow = ::showCenterMap
         MapMirrors.sink = mirrorSink
         MapMirrors.onChanged = mirrorsChanged
@@ -1158,7 +1158,7 @@ class CarPlayHostActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        WheelKeyService.restoreIfNeeded(this)
+        if (!CarPlayHostIntegration.transportOnlyMedia) WheelKeyService.restoreIfNeeded(this) // LPlay
         hostAppearanceResumed = true
         updateCallPopupGuard()
         val savedNightMode = AirPlayPersistence.loadCarPlayNightMode(this)
@@ -1605,6 +1605,8 @@ class CarPlayHostActivity : ComponentActivity() {
 
     // Hardware navigation belongs to the iPhone-rendered CarPlay UI, not Android View focus.
     override fun dispatchKeyEvent(original: KeyEvent): Boolean {
+        // LPlay: the car owns the wheel; system keys (volume, back) must still work, so pass the event on unchanged.
+        if (CarPlayHostIntegration.transportOnlyMedia) return super.dispatchKeyEvent(original)
         val event = CarPlayHostIntegration.remapKey(original) // CarLink: learned steering-wheel keys
         val physicalKey = Triple(event.deviceId, event.keyCode, event.scanCode)
         val downOrUp = event.action == KeyEvent.ACTION_DOWN || event.action == KeyEvent.ACTION_UP

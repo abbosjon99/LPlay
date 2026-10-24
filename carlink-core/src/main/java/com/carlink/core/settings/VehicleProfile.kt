@@ -26,6 +26,12 @@ enum class VehicleProfile {
     LEAPMOTOR_C01,
     ;
 
+    /**
+     * LPlay: the car owns the steering-wheel, dock and voice buttons, so the engines keep a transport-only media session and
+     * the now-playing notification, and CarLink's learned wheel buttons do nothing.
+     */
+    val transportOnlyMedia: Boolean get() = this == LEAPMOTOR_C01
+
     companion object {
         /** The car's own multimedia app; its presence is how a Leapmotor head unit is told from a phone or tablet. */
         const val LEAPMOTOR_MULTIMEDIA_PACKAGE = "com.leapmotor.multimedia"

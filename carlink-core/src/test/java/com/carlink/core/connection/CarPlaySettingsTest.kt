@@ -33,6 +33,7 @@ class CarPlaySettingsTest {
 
     @After fun restoreHooks() {
         CarPlayHostIntegration.vehicleIntegrations = true
+        CarPlayHostIntegration.transportOnlyMedia = false
         CarPlaySettingsPolicy.appearance = { CarLinkAppearance.DARK }
     }
 
@@ -77,6 +78,20 @@ class CarPlaySettingsTest {
         assertFalse(byd.forceBydExtrasOff)
         assertEquals("BYD", byd.oemLabel)
         assertFalse(map(UnifiedSettings(bydDirections = false), profile = VehicleProfile.BYD_DILINK).vehicle.navigationOutput)
+    }
+
+    @Test fun theLeapmotorProfileKeepsBydOutputsOffAndDropsLearnedWheelKeys() {
+        val keys = mapOf(com.carlink.core.settings.WheelAction.VOICE to 1001, com.carlink.core.settings.WheelAction.ANSWER to 1002)
+        val generic = map(UnifiedSettings(wheelKeys = keys))
+        assertTrue(generic.wheelKeyRemap.isNotEmpty())
+        assertTrue(generic.callKeys)
+
+        val leapmotor = map(UnifiedSettings(wheelKeys = keys, bydDirections = true), profile = VehicleProfile.LEAPMOTOR_C01)
+        assertTrue(leapmotor.wheelKeyRemap.isEmpty())
+        assertFalse(leapmotor.callKeys)
+        assertFalse(leapmotor.vehicle.integrations)
+        assertFalse(leapmotor.vehicle.navigationOutput)
+        assertTrue(leapmotor.vehicle.forceBydExtrasOff)
     }
 
     @Test fun applyWritesGenericValuesIntoDiPlay() {
