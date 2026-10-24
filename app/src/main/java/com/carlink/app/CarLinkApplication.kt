@@ -52,14 +52,14 @@ class CarLinkApplication : App() {
         HostIntegration.homeActivity = HomeActivity::class.java
         HostIntegration.appName = name
         HostIntegration.serviceChannelName = getString(R.string.carlink_notification_channel_android_auto)
-        HostIntegration.mediaSessionTag = "CarLink Android Auto"
+        HostIntegration.mediaSessionTag = "LPlay Android Auto"
         HostIntegration.toastHandler = { _, text, forced ->
             Log.i(TOAST_TAG, "Android Auto engine toast forced=$forced: $text")
             !forced
         }
         CarPlayHostIntegration.homeActivity = HomeActivity::class.java
         CarPlayHostIntegration.appName = name
-        CarPlayHostIntegration.mediaSessionTag = "CarLink CarPlay"
+        CarPlayHostIntegration.mediaSessionTag = "LPlay CarPlay"
         CarPlayHostIntegration.toastHandler = { _, text ->
             Log.i(TOAST_TAG, "CarPlay engine toast: $text")
             true

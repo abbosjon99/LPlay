@@ -233,6 +233,8 @@ private fun Identity(facts: AboutFacts, stacked: Boolean) {
                 modifier = Modifier.semantics { heading() })
             Spacer(Modifier.height(8.dp))
             Text(stringResource(R.string.carlink_about_tagline), style = MaterialTheme.typography.bodyLarge, color = scheme.onSurfaceVariant)
+            // LPlay: the credit to the app this one is based on.
+            Text(stringResource(R.string.lplay_about_based_on), style = MaterialTheme.typography.bodyMedium, color = scheme.onSurfaceVariant)
             Spacer(Modifier.height(if (isCar) 24.dp else 16.dp))
             versionTag()
         }
@@ -245,6 +247,9 @@ private fun Identity(facts: AboutFacts, stacked: Boolean) {
                 Text(stringResource(R.string.app_name), style = MaterialTheme.typography.displaySmall, color = scheme.onSurface,
                     modifier = Modifier.semantics { heading() })
                 Text(stringResource(R.string.carlink_about_tagline), style = MaterialTheme.typography.bodyMedium,
+                    color = scheme.onSurfaceVariant)
+                // LPlay: the credit to the app this one is based on.
+                Text(stringResource(R.string.lplay_about_based_on), style = MaterialTheme.typography.bodyMedium,
                     color = scheme.onSurfaceVariant)
                 Spacer(Modifier.height(10.dp))
                 versionTag()
@@ -263,8 +268,9 @@ private fun SourceCard() {
             Spacer(Modifier.height(if (isCar) 24.dp else 16.dp))
             BoxWithConstraints(Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
                 // Text under each code can be wider than the code at large font scales; allow for it.
-                val sideBySide = maxWidth >= qrSize * 2 + 48.dp
+                val sideBySide = maxWidth >= qrSize * 3 + 96.dp // LPlay: three codes (CarLink and both engines)
                 val panels = @Composable {
+                    QrPanel(stringResource(R.string.lplay_about_qr_carlink), AppInfo.CARLINK_SOURCE, qrSize)
                     QrPanel(stringResource(R.string.carlink_about_qr_carplay), AppInfo.CARPLAY_ENGINE_SOURCE, qrSize)
                     QrPanel(stringResource(R.string.carlink_about_qr_aa), AppInfo.ANDROID_AUTO_ENGINE_SOURCE, qrSize)
                 }
@@ -419,6 +425,7 @@ private fun ColumnScope.LicensesContent(onRead: (String) -> Unit) {
 
 @Composable
 private fun ColumnScope.CreditsContent() {
+    CreditItem(stringResource(R.string.lplay_about_credit_carlink_name), stringResource(R.string.lplay_about_credit_carlink))
     CreditItem(stringResource(R.string.carlink_about_lic_diplay_name), stringResource(R.string.carlink_about_credit_diplay))
     CreditItem(stringResource(R.string.carlink_about_lic_diauto_name), stringResource(R.string.carlink_about_credit_diauto))
     CreditItem(stringResource(R.string.carlink_about_credit_openheadunit_name), stringResource(R.string.carlink_about_credit_openheadunit))

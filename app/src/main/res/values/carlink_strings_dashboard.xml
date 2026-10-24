@@ -10,7 +10,7 @@
     <string name="carlink_home_eyebrow_problem">Needs attention</string>
 
     <string name="carlink_home_permission_title">One quick permission</string>
-    <string name="carlink_home_permission_body">CarLink needs nearby devices, location and the microphone to find your phone and run CarPlay or Android Auto.</string>
+    <string name="carlink_home_permission_body">LPlay needs nearby devices, location and the microphone to find your phone and run CarPlay or Android Auto.</string>
     <string name="carlink_home_permission_action">Allow</string>
 
     <string name="carlink_home_bt_off_title">Bluetooth is off</string>
@@ -55,7 +55,7 @@
     <string name="carlink_home_error_hotspot_off_title">The car hotspot is off</string>
     <string name="carlink_home_error_hotspot_off_body">Turn on this screen\'s hotspot, or use Wi-Fi Direct, which needs no hotspot.</string>
     <string name="carlink_home_error_wifi_details_title">Add your Wi-Fi password</string>
-    <string name="carlink_home_error_wifi_details_body">Same Wi-Fi is chosen in Settings › Connection. CarLink needs the network\'s name and password once.</string>
+    <string name="carlink_home_error_wifi_details_body">Same Wi-Fi is chosen in Settings › Connection. LPlay needs the network\'s name and password once.</string>
     <string name="carlink_home_error_wifi_not_joined_title">This screen isn\'t on your Wi-Fi</string>
     <string name="carlink_home_error_wifi_not_joined_body">Same Wi-Fi needs this screen on the network saved in Settings › Connection. Join that network, or use Wi-Fi Direct.</string>
     <string name="carlink_home_error_engine_title">Couldn\'t connect</string>
@@ -98,7 +98,7 @@
 
     <string name="carlink_home_same_wifi_title">Password for %1$s</string>
     <string name="carlink_home_wifi_dialog_title">Add your Wi-Fi</string>
-    <string name="carlink_home_wifi_dialog_body">CarLink saves it on this screen and connects again.</string>
+    <string name="carlink_home_wifi_dialog_body">LPlay saves it on this screen and connects again.</string>
     <string name="carlink_home_same_wifi_password">Wi-Fi password</string>
     <string name="carlink_home_same_wifi_save">Save</string>
     <string name="carlink_home_same_wifi_enter">Add password</string>
@@ -130,8 +130,8 @@
     <string name="carlink_home_error_location_off_title">Location is off</string>
     <string name="carlink_home_error_location_off_body">While Location is off, Android hides Wi-Fi names and nearby devices, so the wireless link can\'t start. Turn it on, then come back.</string>
     <string name="carlink_home_error_permissions_title">Permissions needed</string>
-    <string name="carlink_home_error_permissions_body">CarLink needs Nearby devices, Location and Microphone to connect your phone.</string>
-    <string name="carlink_home_error_overlay_title">Allow CarLink to open over other apps</string>
+    <string name="carlink_home_error_permissions_body">LPlay needs Nearby devices, Location and Microphone to connect your phone.</string>
+    <string name="carlink_home_error_overlay_title">Allow LPlay to open over other apps</string>
     <string name="carlink_home_error_overlay_body">So CarPlay or Android Auto can appear as soon as your phone connects.</string>
     <string name="carlink_home_error_vpn_title">Allow the CarPlay connection</string>
     <string name="carlink_home_error_vpn_body">Wired CarPlay runs over a private link. Android asks once to allow it.</string>

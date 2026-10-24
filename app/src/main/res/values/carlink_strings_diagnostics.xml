@@ -78,13 +78,13 @@
 
     <string name="carlink_diag_bt_perm_ok">Bluetooth permission allowed</string>
     <string name="carlink_diag_bt_perm_missing">Bluetooth permission not allowed</string>
-    <string name="carlink_diag_bt_perm_body">CarLink needs it to find your phones and start wireless connections.</string>
+    <string name="carlink_diag_bt_perm_body">LPlay needs it to find your phones and start wireless connections.</string>
 
     <plurals name="carlink_diag_phones_count">
         <item quantity="one">%d paired phone</item>
         <item quantity="other">%d paired phones</item>
     </plurals>
-    <string name="carlink_diag_phones_body">CarLink picks CarPlay or Android Auto for each one.</string>
+    <string name="carlink_diag_phones_body">LPlay picks CarPlay or Android Auto for each one.</string>
     <plurals name="carlink_diag_phones_unknown">
         <item quantity="one">The type of %d phone isn’t known yet. Connect it once to identify it.</item>
         <item quantity="other">The type of %d phones isn’t known yet. Connect each once to identify it.</item>
@@ -112,15 +112,15 @@
 
     <string name="carlink_diag_notif_ok">Notifications allowed</string>
     <string name="carlink_diag_notif_missing">Notifications not allowed</string>
-    <string name="carlink_diag_notif_body">CarLink uses a notification to tell you when a phone is ready.</string>
+    <string name="carlink_diag_notif_body">LPlay uses a notification to tell you when a phone is ready.</string>
 
     <string name="carlink_diag_overlay_ok">Display over other apps allowed</string>
     <string name="carlink_diag_overlay_missing">Display over other apps not allowed</string>
-    <string name="carlink_diag_overlay_body">Lets CarLink open CarPlay or Android Auto when a phone connects in the background.</string>
+    <string name="carlink_diag_overlay_body">Lets LPlay open CarPlay or Android Auto when a phone connects in the background.</string>
 
     <string name="carlink_diag_battery_ok">Battery optimization is off</string>
     <string name="carlink_diag_battery_on">Battery optimization is on</string>
-    <string name="carlink_diag_battery_body">Android may stop CarLink in the background and miss a phone connecting.</string>
+    <string name="carlink_diag_battery_body">Android may stop LPlay in the background and miss a phone connecting.</string>
 
     <string name="carlink_diag_usb_ok">USB host supported</string>
     <string name="carlink_diag_usb_ok_body">Phones can connect by cable.</string>
@@ -141,33 +141,33 @@
     <string name="carlink_diag_decoder_detail">%1$s, up to %2$s</string>
 
     <!-- Summary under the title -->
-    <string name="carlink_diag_summary_body">CarLink checks this device again every time you open this page.</string>
+    <string name="carlink_diag_summary_body">LPlay checks this device again every time you open this page.</string>
     <string name="carlink_diag_open_settings">Open Settings</string>
 
     <!-- Connection log: the engines’ and CarLink’s recent activity, newest first -->
     <string name="carlink_diag_log_title">Connection log</string>
-    <string name="carlink_diag_log_body">Recent activity from CarPlay, Android Auto and CarLink, newest first. Addresses are hidden.</string>
+    <string name="carlink_diag_log_body">Recent activity from CarPlay, Android Auto and LPlay, newest first. Addresses are hidden.</string>
     <string name="carlink_diag_log_filter_all">All</string>
     <string name="carlink_diag_log_share">Share log</string>
-    <string name="carlink_diag_log_share_subject">CarLink connection log</string>
+    <string name="carlink_diag_log_share_subject">LPlay connection log</string>
     <string name="carlink_diag_log_share_chooser">Share the connection log</string>
     <string name="carlink_diag_log_loading">Reading the logs…</string>
     <string name="carlink_diag_log_empty_title">No connection activity yet</string>
     <!-- %1$s is a filter name: CarPlay, Android Auto or CarLink. -->
     <string name="carlink_diag_log_empty_filtered">Nothing from %1$s yet</string>
-    <string name="carlink_diag_log_empty_body">Lines appear here when a phone connects or CarLink starts CarPlay or Android Auto.</string>
+    <string name="carlink_diag_log_empty_body">Lines appear here when a phone connects or LPlay starts CarPlay or Android Auto.</string>
     <!-- First line of the shared log file: versions and device, e.g.
          "CarLink 0.1.0 (1) · DiPlay 0.2.15 · DiAuto 0.3.11 · BYD DiLink5 · Android 10". -->
-    <string name="carlink_diag_log_report_header">CarLink %1$s (%2$d) · DiPlay %3$s · DiAuto %4$s · %5$s %6$s · Android %7$s</string>
+    <string name="carlink_diag_log_report_header">LPlay %1$s (%2$d) · DiPlay %3$s · DiAuto %4$s · %5$s %6$s · Android %7$s</string>
 
     <!-- ===== Report a problem on GitHub (Diagnostics, Home's failure states) ===== -->
     <string name="carlink_report_action">Report on GitHub</string>
     <string name="carlink_report_title">Report a problem on GitHub</string>
-    <string name="carlink_report_intro">CarLink opens a new issue on GitHub with these details filled in. Check it in the browser, then tap Submit.</string>
+    <string name="carlink_report_intro">LPlay opens a new issue on GitHub with these details filled in. Check it in the browser, then tap Submit.</string>
     <string name="carlink_report_preparing">Preparing the report…</string>
     <string name="carlink_report_included">What is included</string>
     <string name="carlink_report_field_title">Title</string>
-    <string name="carlink_report_field_version">CarLink version</string>
+    <string name="carlink_report_field_version">LPlay version</string>
     <string name="carlink_report_field_screen">This screen</string>
     <string name="carlink_report_field_phone">Phone</string>
     <string name="carlink_report_field_projection">CarPlay or Android Auto</string>
@@ -195,7 +195,8 @@
 
     <!-- ===== About ===== -->
     <string name="carlink_about_title">About</string>
-    <string name="carlink_about_tagline">CarPlay and Android Auto in one app.</string>
+    <string name="carlink_about_tagline">CarPlay and Android Auto for the Leapmotor C01, in one app.</string>
+    <string name="lplay_about_based_on">Based on CarLink by F-e-n-y-x</string>
     <!-- The version as a tag under the name, e.g. "Version 0.1.0 (1)". -->
     <string name="carlink_about_version_tag">Version %1$s</string>
     <string name="carlink_about_engines">Engines</string>
@@ -212,23 +213,24 @@
     <!-- Android version and screen size in pixels, e.g. "Android 10 · 1920×1080 px". -->
     <string name="carlink_about_device_system">Android %1$s · %2$s px</string>
     <string name="carlink_about_licenses">Open-source licenses</string>
-    <string name="carlink_about_licenses_body">CarLink is free software under the GNU AGPL v3.</string>
+    <string name="carlink_about_licenses_body">LPlay is free software under the GNU AGPL v3, based on CarLink by F-e-n-y-x.</string>
     <string name="carlink_about_credits">Credits</string>
-    <string name="carlink_about_credits_body">DiPlay, DiAuto, Open Headunit, headunit and others</string>
+    <string name="carlink_about_credits_body">CarLink, DiPlay, DiAuto, Open Headunit, headunit and others</string>
     <string name="carlink_about_source">Source code</string>
-    <string name="carlink_about_source_body">Scan with your phone to get the source of both engines.</string>
+    <string name="carlink_about_source_body">Scan with your phone to get the source of the app LPlay is based on and of both engines.</string>
+    <string name="lplay_about_qr_carlink">CarLink (the base app)</string>
     <string name="carlink_about_qr_carplay">CarPlay engine (DiPlay)</string>
     <string name="carlink_about_qr_aa">Android Auto engine (DiAuto)</string>
     <!-- Screen-reader description of a QR code; %1$s is the web address it opens. -->
     <string name="carlink_about_qr_a11y">QR code for %1$s</string>
     <string name="carlink_about_legal">Trademarks</string>
-    <string name="carlink_about_trademarks">CarPlay is a trademark of Apple Inc. Android Auto is a trademark of Google LLC. CarLink is not affiliated with or endorsed by Apple or Google.</string>
+    <string name="carlink_about_trademarks">CarPlay is a trademark of Apple Inc. Android Auto is a trademark of Google LLC. LPlay is not affiliated with or endorsed by Apple or Google.</string>
     <string name="carlink_about_not_certified">The CarPlay engine (DiPlay) is not an Apple-certified product.</string>
-    <string name="carlink_about_byd">BYD and DiLink belong to their owner. CarLink is not affiliated with or endorsed by BYD.</string>
+    <string name="carlink_about_byd">BYD and DiLink belong to their owner. LPlay is not affiliated with or endorsed by BYD.</string>
     <string name="carlink_about_close">Close</string>
 
     <!-- Licenses sheet -->
-    <string name="carlink_about_licenses_intro">CarLink combines the DiPlay CarPlay engine (GNU GPL v3) and the DiAuto Android Auto engine (GNU AGPL v3). The combined work is distributed under the GNU Affero General Public License, version 3. You may copy, change and share it under those terms. It comes with no warranty.</string>
+    <string name="carlink_about_licenses_intro">LPlay is a modified version of CarLink by F-e-n-y-x (GNU AGPL v3). CarLink combines the DiPlay CarPlay engine (GNU GPL v3) and the DiAuto Android Auto engine (GNU AGPL v3). The combined work is distributed under the GNU Affero General Public License, version 3. You may copy, change and share it under those terms. It comes with no warranty.</string>
     <string name="carlink_about_licenses_source">The license entitles you to the complete source code. The QR codes on the About page link to the source of both engines.</string>
     <string name="carlink_about_components">Components</string>
     <string name="carlink_about_read_agpl">GNU Affero General Public License v3</string>
@@ -242,7 +244,7 @@
     <string name="carlink_about_lic_diauto_name" translatable="false">DiAuto</string>
     <string name="carlink_about_lic_diauto">GNU AGPL v3. Keeps the Open Headunit and Michael A. Reid copyright notices.</string>
     <string name="carlink_about_lic_bydmate_name">BYD HUD maneuver icons</string>
-    <string name="carlink_about_lic_bydmate">Copyright AndyShaman (BYDMate, github.com/AndyShaman/BYDMate). PolyForm Noncommercial License 1.0.0. These images are not covered by CarLink’s license. Upstream describes them as donor assets; their original source is not independently established.</string>
+    <string name="carlink_about_lic_bydmate">Copyright AndyShaman (BYDMate, github.com/AndyShaman/BYDMate). PolyForm Noncommercial License 1.0.0. These images are not covered by LPlay’s license. Upstream describes them as donor assets; their original source is not independently established.</string>
     <string name="carlink_about_lic_ffmpeg_name" translatable="false">FFmpeg 7.1.1</string>
     <string name="carlink_about_lic_ffmpeg">GNU LGPL v2.1 or later. Software HEVC decoding on 64-bit ARM.</string>
     <string name="carlink_about_lic_libusb_name" translatable="false">libusb</string>
@@ -262,6 +264,8 @@
     <string name="carlink_about_lic_others">Each library keeps its original notices. The full list of dependencies is in the build files of the source code.</string>
 
     <!-- Credits sheet -->
+    <string name="lplay_about_credit_carlink_name" translatable="false">CarLink</string>
+    <string name="lplay_about_credit_carlink">The app LPlay is built on, by F-e-n-y-x (GNU AGPL v3). It merges the two engines below; LPlay adds the Leapmotor C01 changes and keeps its copyright and licence notices.</string>
     <string name="carlink_about_credit_diplay">The CarPlay engine, by shihabal3amri. Based on xcertplay by shilapi, which credits LIVI and Showcase for protocol research.</string>
     <string name="carlink_about_credit_diauto">The Android Auto engine, by shihabal3amri. An independent fork of Open Headunit and its contributors.</string>
     <string name="carlink_about_credit_openheadunit_name" translatable="false">Open Headunit</string>

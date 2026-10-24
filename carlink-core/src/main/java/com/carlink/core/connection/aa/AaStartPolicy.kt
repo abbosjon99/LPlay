@@ -88,7 +88,7 @@ internal object LeftoverGroupPolicy {
     private val CARPLAY_GROUP = Regex("^DIRECT-dp[0-9a-f]{12}-.*")
 
     fun decide(groupName: String?, isGroupOwner: Boolean, keptName: String?, recordedName: String?,
-               accessoryName: String = "CarLink"): LeftoverGroupAction = when {
+               accessoryName: String = "LPlay"): LeftoverGroupAction = when {
         groupName.isNullOrBlank() -> LeftoverGroupAction.NONE
         isAndroidAutoGroup(groupName, isGroupOwner, keptName, recordedName) -> LeftoverGroupAction.LEAVE_FOR_ENGINE
         isGroupOwner && CARPLAY_GROUP.matches(groupName) -> LeftoverGroupAction.REMOVE_CARPLAY_GROUP

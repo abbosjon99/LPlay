@@ -21,7 +21,7 @@
     <string name="carlink_settings_cat_sound_summary">Where music and calls play</string>
     <string name="carlink_settings_cat_navigation_summary">Car location and directions</string>
     <string name="carlink_settings_cat_car_summary">Driving side and controls</string>
-    <string name="carlink_settings_cat_general_summary">CarLink’s look, help and version</string>
+    <string name="carlink_settings_cat_general_summary">LPlay’s look, help and version</string>
 
     <!-- Shared -->
     <string name="carlink_settings_custom">Custom (set in Advanced)</string>
@@ -39,9 +39,9 @@
     <string name="carlink_settings_auto_usb">Connect when plugged in</string>
     <string name="carlink_settings_auto_usb_detail">Start as soon as a phone is connected with a USB cable</string>
     <string name="carlink_settings_start_boot">Start with the car</string>
-    <string name="carlink_settings_start_boot_detail">Open CarLink when the head unit turns on</string>
+    <string name="carlink_settings_start_boot_detail">Open LPlay when the head unit turns on</string>
     <string name="carlink_settings_paused_title">Automatic connection is paused</string>
-    <string name="carlink_settings_paused_body">You disconnected, so CarLink won’t reconnect on its own until you connect again.</string>
+    <string name="carlink_settings_paused_body">You disconnected, so LPlay won’t reconnect on its own until you connect again.</string>
     <string name="carlink_settings_resume">Resume</string>
 
     <string name="carlink_settings_group_wireless">Wireless</string>
@@ -65,15 +65,15 @@
 
     <string name="carlink_settings_hotspot">Car hotspot</string>
     <string name="carlink_settings_hotspot_detail">Name and password of the car’s own hotspot</string>
-    <string name="carlink_settings_hotspot_sheet_body">CarLink reads them from the car where it can and passes them to your phone. Change them here and CarLink changes the car’s hotspot too, where Android allows it.</string>
+    <string name="carlink_settings_hotspot_sheet_body">LPlay reads them from the car where it can and passes them to your phone. Change them here and LPlay changes the car’s hotspot too, where Android allows it.</string>
     <string name="carlink_settings_hotspot_read">Read from the car</string>
     <string name="carlink_settings_hotspot_reading">Reading the car’s hotspot…</string>
-    <string name="carlink_settings_hotspot_unreadable">This stereo does not let CarLink read its hotspot. Enter the name and password exactly as the car’s hotspot settings show them.</string>
+    <string name="carlink_settings_hotspot_unreadable">This stereo does not let LPlay read its hotspot. Enter the name and password exactly as the car’s hotspot settings show them.</string>
     <string name="carlink_settings_hotspot_applied">The car’s hotspot now uses this name and password</string>
-    <string name="carlink_settings_hotspot_not_applied">Saved in CarLink. This stereo does not let CarLink change its hotspot: set the same name and password in the car’s hotspot settings.</string>
+    <string name="carlink_settings_hotspot_not_applied">Saved in LPlay. This stereo does not let LPlay change its hotspot: set the same name and password in the car’s hotspot settings.</string>
     <string name="carlink_settings_same_wifi">Same Wi-Fi network</string>
     <string name="carlink_settings_same_wifi_detail">The router both the car and your iPhone join</string>
-    <string name="carlink_settings_same_wifi_sheet_body">The car must already be on this Wi-Fi. CarLink tells your iPhone to join it over Bluetooth.</string>
+    <string name="carlink_settings_same_wifi_sheet_body">The car must already be on this Wi-Fi. LPlay tells your iPhone to join it over Bluetooth.</string>
     <string name="carlink_settings_wifi_name">Network name</string>
     <string name="carlink_settings_wifi_password">Password</string>
     <string name="carlink_settings_wifi_name_error">Enter a name of up to 32 characters</string>
@@ -88,7 +88,7 @@
     <string name="carlink_settings_bluetooth">Pair a phone</string>
     <string name="carlink_settings_bluetooth_detail">Opens Android’s Bluetooth settings</string>
     <string name="carlink_settings_permissions">App permissions</string>
-    <string name="carlink_settings_permissions_detail">Review what CarLink is allowed to use</string>
+    <string name="carlink_settings_permissions_detail">Review what LPlay is allowed to use</string>
 
     <!-- Display -->
     <string name="carlink_settings_group_projection">CarPlay and Android Auto</string>
@@ -131,7 +131,7 @@
     <string name="carlink_settings_group_sound">Sound</string>
     <string name="carlink_settings_sound">Sound plays</string>
     <string name="carlink_settings_sound_detail">Where music, directions and calls play</string>
-    <string name="carlink_settings_sound_carlink">Through CarLink</string>
+    <string name="carlink_settings_sound_carlink">Through LPlay</string>
     <string name="carlink_settings_sound_bluetooth">Through the car’s Bluetooth</string>
     <string name="carlink_settings_sound_carlink_detail">The head unit plays all sound. Recommended.</string>
     <string name="carlink_settings_sound_bluetooth_detail">Music goes through the car’s own Bluetooth audio instead.</string>
@@ -153,9 +153,9 @@
     <string name="carlink_settings_drive_right_detail">Steering wheel on the right</string>
 
     <!-- General -->
-    <string name="carlink_settings_group_carlink">CarLink</string>
+    <string name="carlink_settings_group_carlink">LPlay</string>
     <string name="carlink_settings_appearance">Appearance</string>
-    <string name="carlink_settings_appearance_detail">Colors of CarLink’s own screens</string>
+    <string name="carlink_settings_appearance_detail">Colors of LPlay’s own screens</string>
     <string name="carlink_settings_appearance_follow">Follow the car</string>
     <string name="carlink_settings_appearance_dark">Dark</string>
     <string name="carlink_settings_appearance_light">Light</string>
@@ -171,7 +171,7 @@
     <string name="carlink_settings_layout_car_detail">Large targets for a head unit</string>
     <string name="carlink_settings_layout_handheld_detail">Standard Android sizes</string>
     <string name="carlink_settings_rendering">Visual effects</string>
-    <string name="carlink_settings_rendering_detail">Light, glow and animation on CarLink’s screens</string>
+    <string name="carlink_settings_rendering_detail">Light, glow and animation on LPlay’s screens</string>
     <string name="carlink_settings_rendering_auto">Automatic</string>
     <string name="carlink_settings_rendering_full">Full</string>
     <string name="carlink_settings_rendering_lite">Lite</string>
@@ -180,8 +180,8 @@
     <string name="carlink_settings_rendering_auto_detail_full">Full on this device</string>
     <string name="carlink_settings_rendering_full_detail">Soft light, glow, grain and smooth animation</string>
     <string name="carlink_settings_rendering_lite_detail">Plain fills and fewer redraws, for slower head units. Same layout and colours</string>
-    <string name="carlink_settings_carlink_size">CarLink text size</string>
-    <string name="carlink_settings_carlink_size_detail">Size of CarLink’s own screens</string>
+    <string name="carlink_settings_carlink_size">LPlay text size</string>
+    <string name="carlink_settings_carlink_size_detail">Size of LPlay’s own screens</string>
     <string name="carlink_settings_group_help">Help</string>
     <string name="carlink_settings_diagnostics">Diagnostics</string>
     <string name="carlink_settings_diagnostics_detail">Checks and live connection details</string>
@@ -193,7 +193,7 @@
     </plurals>
     <string name="carlink_settings_lab_toggle">Show Lab settings</string>
     <string name="carlink_settings_lab_toggle_detail">Experimental and debug options, framed in amber</string>
-    <string name="carlink_settings_about_open">About CarLink</string>
+    <string name="carlink_settings_about_open">About LPlay</string>
 
     <!-- Advanced and Lab -->
     <string name="carlink_settings_advanced">Advanced</string>
@@ -201,9 +201,9 @@
     <string name="carlink_settings_lab">Lab</string>
     <string name="carlink_settings_lab_detail">Experimental and debug options. If a connection stops working, turn them off first.</string>
     <string name="carlink_settings_floating_switcher">Floating switcher</string>
-    <string name="carlink_settings_floating_switcher_detail">A small button over CarPlay and Android Auto to switch phones, open CarLink or disconnect</string>
+    <string name="carlink_settings_floating_switcher_detail">A small button over CarPlay and Android Auto to switch phones, open LPlay or disconnect</string>
     <string name="carlink_settings_floating_switcher_permission">Allow display over other apps</string>
-    <string name="carlink_settings_floating_switcher_permission_detail">Android needs this before CarLink can show the button</string>
+    <string name="carlink_settings_floating_switcher_permission_detail">Android needs this before LPlay can show the button</string>
     <!-- Settings › Car › Car brand (core settings/CarBrand), also the setup's car step. Brand names come from CarBrand.displayName. -->
     <string name="carlink_settings_car_brand">Car brand</string>
     <string name="carlink_settings_car_brand_detail">BYD adds its DiLink extras; other brands only label this car</string>
@@ -220,15 +220,15 @@
     <string name="carlink_settings_car_motorcycles">Motorcycles</string>
     <string name="carlink_settings_car_byd_extras">DiLink extras</string>
     <string name="carlink_settings_car_explain_byd">BYD adds the DiLink extras: directions on the HUD and the instrument cluster, and BYD steering-wheel keys.</string>
-    <string name="carlink_settings_car_explain_other">CarPlay and Android Auto work the same as in any car. The brand only labels this car in CarLink.</string>
+    <string name="carlink_settings_car_explain_other">CarPlay and Android Auto work the same as in any car. The brand only labels this car in LPlay.</string>
     <!-- Settings › Car › Steering-wheel buttons (core settings/WheelKeys). -->
     <string name="carlink_wheel_keys">Steering-wheel buttons</string>
-    <string name="carlink_wheel_keys_detail">Teach CarLink your wheel\'s buttons for voice, calls and music in CarPlay and Android Auto</string>
+    <string name="carlink_wheel_keys_detail">Teach LPlay your wheel\'s buttons for voice, calls and music in CarPlay and Android Auto</string>
     <plurals name="carlink_wheel_keys_value">
         <item quantity="one">%d set</item>
         <item quantity="other">%d set</item>
     </plurals>
-    <string name="carlink_wheel_keys_sheet_body">Tap Learn, then press the button on the steering wheel. Buttons the stereo keeps for itself never reach CarLink and cannot be learned.</string>
+    <string name="carlink_wheel_keys_sheet_body">Tap Learn, then press the button on the steering wheel. Buttons the stereo keeps for itself never reach LPlay and cannot be learned.</string>
     <string name="carlink_wheel_action_voice">Voice assistant</string>
     <string name="carlink_wheel_action_voice_detail">Siri or Google Assistant</string>
     <string name="carlink_wheel_action_answer">Answer call</string>

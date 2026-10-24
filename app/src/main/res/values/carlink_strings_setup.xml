@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- First-time setup (ui/setup): welcome, permissions, car brand, pairing a phone, done. -->
 <resources>
-    <string name="carlink_setup_title">Set up CarLink</string>
+    <string name="carlink_setup_title">Set up LPlay</string>
     <string name="carlink_setup_close">Skip setup</string>
     <string name="carlink_setup_back">Back</string>
     <string name="carlink_setup_continue">Continue</string>
@@ -15,7 +15,7 @@
     <!-- Welcome -->
     <string name="carlink_setup_welcome_eyebrow">Welcome</string>
     <string name="carlink_setup_welcome_title">Let’s connect your phone</string>
-    <string name="carlink_setup_welcome_body">CarLink runs Apple CarPlay for iPhone and Android Auto for Android phones, by cable or wirelessly. Setup takes about two minutes.</string>
+    <string name="carlink_setup_welcome_body">LPlay runs Apple CarPlay for iPhone and Android Auto for Android phones, by cable or wirelessly. Setup takes about two minutes.</string>
     <string name="carlink_setup_welcome_start">Start</string>
     <string name="carlink_setup_plan_access">Allow access</string>
     <string name="carlink_setup_plan_access_detail">Bluetooth, Wi-Fi and a few switches, all at once</string>
@@ -26,7 +26,7 @@
 
     <!-- Permissions -->
     <string name="carlink_setup_permissions_eyebrow">Access</string>
-    <string name="carlink_setup_permissions_title">Allow what CarLink needs</string>
+    <string name="carlink_setup_permissions_title">Allow what LPlay needs</string>
     <string name="carlink_setup_permissions_body">Android asks for each one once. Allow the Recommended ones now so nothing asks while you drive; Optional ones can wait.</string>
     <string name="carlink_setup_permissions_all">Allow all</string>
     <string name="carlink_setup_permissions_done">Everything needed is allowed</string>
@@ -46,9 +46,9 @@
     <string name="carlink_setup_perm_microphone">Microphone</string>
     <string name="carlink_setup_perm_microphone_detail">Siri, Google Assistant and phone calls</string>
     <string name="carlink_setup_perm_notifications">Notifications</string>
-    <string name="carlink_setup_perm_notifications_detail">Shows that CarLink is connected and lets you stop it</string>
+    <string name="carlink_setup_perm_notifications_detail">Shows that LPlay is connected and lets you stop it</string>
     <string name="carlink_setup_perm_overlay">Display over other apps</string>
-    <string name="carlink_setup_perm_overlay_detail">Lets CarLink open by itself when your phone connects</string>
+    <string name="carlink_setup_perm_overlay_detail">Lets LPlay open by itself when your phone connects</string>
     <string name="carlink_setup_perm_battery">Run in the background</string>
     <string name="carlink_setup_perm_battery_detail">Keeps the connection up when the screen sleeps</string>
     <string name="carlink_setup_perm_vpn">Wired CarPlay link</string>
@@ -90,9 +90,9 @@
     <string name="carlink_setup_pair_wireless">Pair over Bluetooth instead</string>
     <string name="carlink_setup_pair_skip">Skip</string>
     <string name="carlink_setup_pair_cable_title">Plug your phone into this screen</string>
-    <string name="carlink_setup_pair_cable_body">Use the phone’s charging cable in this screen’s USB port. Unlock the phone; CarLink starts by itself.</string>
+    <string name="carlink_setup_pair_cable_body">Use the phone’s charging cable in this screen’s USB port. Unlock the phone; LPlay starts by itself.</string>
     <!-- Shown before and while plugging in: the two one-time prompts of the first cable connection. -->
-    <string name="carlink_setup_pair_cable_prompts">When you plug in, Android asks once to allow CarLink\u00A0— tick “Always open CarLink”\u00A0— and an iPhone asks you to Trust this screen.</string>
+    <string name="carlink_setup_pair_cable_prompts">When you plug in, Android asks once to allow LPlay\u00A0— tick “Always open LPlay”\u00A0— and an iPhone asks you to Trust this screen.</string>
     <string name="carlink_setup_pair_cable_waiting">Waiting for a phone on the cable…</string>
     <string name="carlink_setup_pair_name_label">This screen’s Bluetooth name</string>
     <string name="carlink_setup_pair_name_unknown">Turn on Bluetooth to see it</string>

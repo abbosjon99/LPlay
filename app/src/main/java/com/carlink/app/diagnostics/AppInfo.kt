@@ -31,7 +31,10 @@ object AppInfo {
         return metrics.widthPixels to metrics.heightPixels
     }
 
-    /** Where the source of each engine is published; CarLink's own repository is added when public. */
+    /** The app LPlay is based on (LPlay: CarLink by F-e-n-y-x, GNU AGPL v3). */
+    const val CARLINK_SOURCE = "https://github.com/F-e-n-y-x/CarLink"
+
+    /** Where the source of each engine is published. */
     const val CARPLAY_ENGINE_SOURCE = "https://github.com/shihabal3amri/DiPlay"
     const val ANDROID_AUTO_ENGINE_SOURCE = "https://github.com/shihabal3amri/DiAuto"
 

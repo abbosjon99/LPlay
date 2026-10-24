@@ -16,5 +16,5 @@
     <color name="da_muted">#A9B3C0</color>
 
     <!-- CarLink's entry in Android Auto's exit menu, in place of DiAuto's Quick Settings. -->
-    <string name="carlink_engine_open_carlink">Open CarLink</string>
+    <string name="carlink_engine_open_carlink">Open LPlay</string>
 </resources>
