@@ -44,6 +44,13 @@ object CarPlayHostIntegration {
     @JvmStatic
     var transportOnlyMedia: Boolean = false
 
+    /**
+     * LPlay: the host's own cluster window for the dashboard map (Leapmotor C01). Null keeps DiPlay's own routes.
+     */
+    @Volatile
+    @JvmStatic
+    var clusterRoute: ClusterRouteHook? = null
+
     /** [event] with its key code replaced per [keyRemap], or [event] itself. */
     internal fun remapKey(event: android.view.KeyEvent): android.view.KeyEvent {
         val code = keyRemap[event.keyCode] ?: return event

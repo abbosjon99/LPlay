@@ -94,6 +94,20 @@ class CarPlaySettingsTest {
         assertTrue(leapmotor.vehicle.forceBydExtrasOff)
     }
 
+    @Test fun theLeapmotorProfileFollowsTheDriversClusterSwitchInTheEngine() {
+        val prefs = uz.carhelper.lplay.cluster.ClusterPrefs
+        prefs.save(app, uz.carhelper.lplay.cluster.ClusterConfig(enabled = true))
+        CarPlaySettingsPolicy.apply(app, map(profile = VehicleProfile.LEAPMOTOR_C01))
+        assertTrue(AirPlayPersistence.loadClusterMapEnabled(app))
+        prefs.save(app, uz.carhelper.lplay.cluster.ClusterConfig(enabled = false))
+        CarPlaySettingsPolicy.apply(app, map(profile = VehicleProfile.LEAPMOTOR_C01))
+        assertFalse(AirPlayPersistence.loadClusterMapEnabled(app))
+        // Any other profile still has the BYD extras (and with them the cluster map) forced off.
+        AirPlayPersistence.saveClusterMapEnabled(app, true)
+        CarPlaySettingsPolicy.apply(app, map(profile = VehicleProfile.GENERIC))
+        assertFalse(AirPlayPersistence.loadClusterMapEnabled(app))
+    }
+
     @Test fun applyWritesGenericValuesIntoDiPlay() {
         BydOutputSettings.setBatteryToIphone(app, true)
         AirPlayPersistence.saveClusterMapEnabled(app, true)

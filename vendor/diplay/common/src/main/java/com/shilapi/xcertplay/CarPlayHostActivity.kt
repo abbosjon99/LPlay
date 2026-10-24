@@ -1305,6 +1305,42 @@ class CarPlayHostActivity : ComponentActivity() {
         else -> false
     }
 
+    // LPlay: when the host app brought its own cluster window ([ClusterRouteHook]), these stand in for the adb route.
+    private val clusterHook: ClusterRouteHook? get() = CarPlayHostIntegration.clusterRoute
+    private fun clusterRouteEnabled(): Boolean = clusterHook?.enabled(this) ?: AdbClusterRouter.enabled(this)
+    private fun clusterRouteConfirmed(): Boolean = clusterHook?.hasConfirmedRoute() ?: ClusterActivityOutput.hasConfirmedRoute()
+    private fun clusterRouteSettling(): Boolean = clusterHook?.routeSettling() ?: ClusterActivityOutput.routeSettling()
+    private fun clusterRouteStreamActive(active: Boolean) {
+        val hook = clusterHook
+        if (hook != null) hook.setStreamActive(active) else ClusterActivityOutput.setStreamActive(active)
+    }
+    private fun clusterRouteStop() {
+        val hook = clusterHook
+        if (hook != null) hook.stop(this) else ClusterActivityOutput.stop(this)
+    }
+    private fun clusterRouteBind() {
+        val hook = clusterHook
+        if (hook != null) hook.bind(this) { onClusterSurface(it) } else ClusterActivityOutput.bind(this, taskId) { onClusterSurface(it) }
+    }
+    private fun clusterRouteEnsure() {
+        val hook = clusterHook
+        if (hook != null) hook.ensure(this) else ClusterActivityOutput.ensure(this)
+    }
+
+    /** The stream for the host's cluster window: exactly the window's size, so nothing is cropped or stretched. */
+    private fun hookClusterConfig(size: Pair<Int, Int>): AirPlayDisplayConfig = CarPlayClusterDisplay.config(
+        size.first,
+        size.second,
+        scalePercent = 100,
+        content = AirPlayPersistence.loadClusterContent(this),
+        markerXPercent = AirPlayPersistence.loadClusterMarkerXPercent(this),
+        markerYPercent = AirPlayPersistence.loadClusterMarkerYPercent(this),
+        baseSafeArea = CarPlayClusterDisplay.VIRTUAL_SAFE_AREA_PERCENT,
+    ).also {
+        MapMirrors.streamAspect = it.widthPixels.toDouble() / it.heightPixels
+        appendLog("Cluster window: requesting stream 111 at ${it.widthPixels}x${it.heightPixels}; safeArea=${it.safeArea}")
+    }
+
     private fun ensureClusterPresentation() {
         if (!AirPlayPersistence.loadClusterMapEnabled(this)) {
             clusterLaunchGate.reset()
@@ -1313,17 +1349,17 @@ class CarPlayHostActivity : ComponentActivity() {
         }
         // Handed back after CarPlay left; the next cluster stream takes the cluster again.
         if (clusterReleasedWhileIdle) return
-        if (AdbClusterRouter.enabled(this)) {
-            ClusterActivityOutput.bind(this, taskId) { onClusterSurface(it) }
-            ClusterActivityOutput.setStreamActive(SCREEN_TYPE_ALT in activeScreenStreamTypes)
+        if (clusterRouteEnabled()) {
+            clusterRouteBind()
+            clusterRouteStreamActive(SCREEN_TYPE_ALT in activeScreenStreamTypes)
             applyClusterTurnOverlay()
-            if (ClusterActivityOutput.hasConfirmedRoute() ||
+            if (clusterRouteConfirmed() ||
                 clusterLaunchGate.request(SystemClock.uptimeMillis(), hasWindowFocus())) launchClusterActivity()
             else scheduleClusterLaunchTick()
             return
         }
         clusterLaunchGate.reset()
-        ClusterActivityOutput.stop(this)
+        clusterRouteStop()
         val theme = effectiveClusterTheme()
         if (DiLink51ClusterLayout.supported()) {
             ensureDiLink51ClusterPresentation(theme)
@@ -1364,7 +1400,7 @@ class CarPlayHostActivity : ComponentActivity() {
     private var carPlayStartHeldForCluster = false
 
     private fun launchClusterActivity() {
-        runCatching { ClusterActivityOutput.ensure(this) }.onFailure {
+        runCatching { clusterRouteEnsure() }.onFailure {
             appendLog("Cluster activity: launch failed ${it.javaClass.simpleName}: ${it.message}")
         }
         scheduleClusterLaunchTick()
@@ -1383,7 +1419,7 @@ class CarPlayHostActivity : ComponentActivity() {
             appendLog("Cluster activity: launching after the main window " +
                 if (hasWindowFocus()) "took focus" else if (isActivityStarted) "waited for focus" else "left the screen")
             launchClusterActivity()
-        } else if (clusterLaunchGate.holdsCarPlayStart(now, ClusterActivityOutput.routeSettling())) {
+        } else if (clusterLaunchGate.holdsCarPlayStart(now, clusterRouteSettling())) {
             scheduleClusterLaunchTick()
         } else if (carPlayStartHeldForCluster) {
             carPlayStartHeldForCluster = false
@@ -1465,7 +1501,7 @@ class CarPlayHostActivity : ComponentActivity() {
         }
     }
     private fun dismissClusterPresentation() {
-        ClusterActivityOutput.stop(this)
+        clusterRouteStop()
         val presentations = (clusterLayers.values + listOfNotNull(clusterPresentation)).distinct()
         clusterLayers.clear()
         clusterPresentation = null
@@ -1480,15 +1516,15 @@ class CarPlayHostActivity : ComponentActivity() {
         if (clusterSurface === surface) return
         // A direct handoff lets MediaCodec.setOutputSurface preserve its reference frames.
         // Clearing first would destroy the decoder and can leave stream 111 waiting for an IDR.
-        if ((!DiLink51ClusterLayout.supported() && !AdbClusterRouter.enabled(this)) || surface == null) {
+        if ((!DiLink51ClusterLayout.supported() && !clusterRouteEnabled()) || surface == null) {
             clusterSurface?.let { old -> sink?.clearSurface(SCREEN_TYPE_ALT, old) }
         }
         clusterSurface = surface
         // Never fall back to the main surface: two decoders must not draw into one Surface.
         if (surface != null) {
-            if (AdbClusterRouter.enabled(this) && ClusterActivityOutput.hasConfirmedRoute() &&
+            if (clusterRouteEnabled() && clusterRouteConfirmed() &&
                 !adbClusterConfigured && controller != null) {
-                ClusterActivityOutput.setStreamActive(false)
+                clusterRouteStreamActive(false)
                 reconnectAfterLoss("DiLink 4 cluster confirmed; requesting its native stream")
             } else sink?.setSurface(SCREEN_TYPE_ALT, surface)
         }
@@ -1521,9 +1557,10 @@ class CarPlayHostActivity : ComponentActivity() {
         clusterStreamOnDisplay = false
         requestedSmallWindowForStream = null
         if (!AirPlayPersistence.loadClusterMapEnabled(this)) return null
-        if (AdbClusterRouter.enabled(this) && ClusterActivityOutput.hasConfirmedRoute()) {
+        if (clusterRouteEnabled() && clusterRouteConfirmed()) {
             adbClusterConfigured = true
             clusterStreamOnDisplay = true
+            clusterHook?.streamSize(this)?.let { return hookClusterConfig(it) } // LPlay
             return DiLink4ClusterDisplay.streamConfig(AirPlayPersistence.loadClusterContent(this),
                 safeAreaRect = AirPlayPersistence.loadClusterSafeAreaRect(this),
                 markerXPercent = AirPlayPersistence.loadClusterMarkerXPercent(this),
@@ -1859,13 +1896,13 @@ class CarPlayHostActivity : ComponentActivity() {
     // The dashboard map pause must not stop the stream while a copy of the map is on screen.
     private fun updateClusterMapShown() {
         com.shilapi.xcertplay.hud.BydNavigationOutputs.setClusterMapShown((clusterPresentation != null ||
-            (ClusterActivityOutput.hasConfirmedRoute() && clusterSurface != null)) && !MapMirrors.any)
+            (clusterRouteConfirmed() && clusterSurface != null)) && !MapMirrors.any)
         // Wheel zoom needs a physical map; centre-screen copies must not suppress that eligibility.
         val surface = clusterSurface?.takeIf { it.isValid }
         val presentation = clusterPresentation
         val presented = surface != null && presentation?.isShowing == true && presentation.mapVisible &&
             presentation.outputSurface === surface
-        val direct = surface != null && adbClusterConfigured && ClusterActivityOutput.hasConfirmedRoute()
+        val direct = surface != null && adbClusterConfigured && clusterRouteConfirmed()
         controller?.setDashboardMapOutputVisible(presented || direct)
     }
 
@@ -5365,7 +5402,7 @@ class CarPlayHostActivity : ComponentActivity() {
                         return@runOnUiThread
                     }
                     activeScreenStreamTypes.clear()
-                    ClusterActivityOutput.setStreamActive(false)
+                    clusterRouteStreamActive(false)
                     setConnectionStage(R.string.carplay_session_ended_reconnecting)
                     appendLog("AirPlay session ended; reconnecting from scratch")
                     reconnectAfterLoss("AirPlay session ended")
@@ -5383,7 +5420,7 @@ class CarPlayHostActivity : ComponentActivity() {
                         return@runOnUiThread
                     }
                     activeScreenStreamTypes.clear()
-                    ClusterActivityOutput.setStreamActive(false)
+                    clusterRouteStreamActive(false)
                     setConnectionStage(R.string.transport_error_reconnecting)
                     appendLog("CarPlay transport error: $message; reconnecting from scratch")
                     reconnectAfterLoss("CarPlay transport error: $message")
@@ -5469,8 +5506,8 @@ class CarPlayHostActivity : ComponentActivity() {
             return false
         }
         displayDiagnosticAttempt = DisplayDiagnosticSnapshot.currentAttempt(this)
-        adbClusterConfigured = AdbClusterRouter.enabled(this) && snapshot.controller.configuredClusterSize() ==
-            (DiLink4ClusterDisplay.STREAM_WIDTH to DiLink4ClusterDisplay.STREAM_HEIGHT)
+        adbClusterConfigured = clusterRouteEnabled() && snapshot.controller.configuredClusterSize() ==
+            (clusterHook?.streamSize(this) ?: (DiLink4ClusterDisplay.STREAM_WIDTH to DiLink4ClusterDisplay.STREAM_HEIGHT)) // LPlay
         controller = snapshot.controller
         updateClusterMapShown()
         sink = snapshot.sink
@@ -5960,7 +5997,7 @@ class CarPlayHostActivity : ComponentActivity() {
             return
         }
         // The first session must already carry the cluster stream; a later route reconnects CarPlay.
-        if (clusterLaunchGate.holdsCarPlayStart(SystemClock.uptimeMillis(), ClusterActivityOutput.routeSettling())) {
+        if (clusterLaunchGate.holdsCarPlayStart(SystemClock.uptimeMillis(), clusterRouteSettling())) {
             carPlayStartHeldForCluster = true
             scheduleClusterLaunchTick()
             return
@@ -6076,7 +6113,7 @@ class CarPlayHostActivity : ComponentActivity() {
         startupRetryButton?.visibility = View.GONE
         appendLog(reason)
         activeScreenStreamTypes.clear()
-        ClusterActivityOutput.setStreamActive(false)
+        clusterRouteStreamActive(false)
         setConnectionStage(reason)
         Log.i(TAG, "$reason; rebuilding stack at ${size.width}x${size.height}")
         val generation = ++restartGeneration
@@ -6580,7 +6617,7 @@ class CarPlayHostActivity : ComponentActivity() {
                 Log.i(ClusterMapPresentation.TAG, "cluster stream active=$active")
                 appendLog("Cluster map: stream active=$active")
                 clusterPresentation?.setStreamActive(active)
-                ClusterActivityOutput.setStreamActive(active)
+                clusterRouteStreamActive(active)
                 MapMirrors.setStreamActive(active)
                 if (active) {
                     mainHandler.removeCallbacks(hideIdleCenterMap)

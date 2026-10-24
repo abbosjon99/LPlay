@@ -31,6 +31,7 @@ dependencies {
     api(project(":carplay-common"))
     api(project(":carplay-shared"))
     api(project(":androidauto"))
+    api(project(":lplay-cluster")) // LPlay
 
     implementation(libs.androidx.core.ktx)
 

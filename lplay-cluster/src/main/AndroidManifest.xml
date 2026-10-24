@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LPlay: the cluster windows. Each is started only by this app, never exported. The Android Auto window runs in
+     the engine's ":aa" process, next to the decoder that feeds it, because a Surface belongs to the process that owns
+     its TextureView. The two windows get their own tasks. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <activity
+            android:name="uz.carhelper.lplay.cluster.CarPlayClusterActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:taskAffinity="${applicationId}.cluster"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="uz.carhelper.lplay.cluster.AaClusterActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:process=":aa"
+            android:taskAffinity="${applicationId}.clusteraa"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="uz.carhelper.lplay.cluster.ClusterTestCardActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:taskAffinity="${applicationId}.clustertest"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+    </application>
+</manifest>

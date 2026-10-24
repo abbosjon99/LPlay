@@ -244,6 +244,7 @@ internal fun SettingsSheetHost(key: String?, ui: SettingsUi, actions: SettingsAc
         }
         EssentialSheet.WHEEL_KEYS -> WheelKeysSheet(u.wheelKeys, onChange = { keys -> actions.update { it.copy(wheelKeys = keys) } },
             onDismiss = onDismiss)
+        EssentialSheet.CLUSTER_FADE -> ClusterFadeSheet(onDismiss) // LPlay
     }
 }
 

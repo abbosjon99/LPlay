@@ -170,6 +170,13 @@ class CarPlayAdapter internal constructor(
             CarPlayHostIntegration.vehicleIntegrations = profile == VehicleProfile.BYD_DILINK
             // LPlay: the car owns the wheel; CarPlay keeps its transport-only media session and now-playing notification.
             CarPlayHostIntegration.transportOnlyMedia = profile.transportOnlyMedia
+            // LPlay: the Leapmotor profile takes the dashboard map into the shared cluster window.
+            if (profile == VehicleProfile.LEAPMOTOR_C01) {
+                CarPlayClusterHook.install()
+                CarPlayHostIntegration.clusterRoute = CarPlayClusterHook
+            } else {
+                CarPlayHostIntegration.clusterRoute = null
+            }
             CarPlayHostIntegration.onHostState = HostStates::dispatch
             CarPlayWaitingView.install()
             // A BYD restores a journaled cluster/HUD output at app start, as DiPlay's own home does

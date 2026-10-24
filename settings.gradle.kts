@@ -50,3 +50,6 @@ include(":androidauto")
 project(":androidauto").projectDir = file("vendor/diauto/app")
 include(":androidauto-contract")
 project(":androidauto-contract").projectDir = file("vendor/diauto/contract")
+
+// LPlay: the Leapmotor instrument-cluster window shared by both engines (engine-neutral).
+include(":lplay-cluster")

@@ -72,6 +72,8 @@ data class CarPlayVehicleSettings(
     val oemLabel: String,
     /** Saved labels that are a default, not a driver's choice, and may be replaced by [oemLabel]. */
     val replaceableOemLabels: Set<String>,
+    /** LPlay: the Leapmotor cluster window carries the dashboard map; its on/off is the driver's ([uz.carhelper.lplay.cluster.ClusterPrefs]). */
+    val leapmotorCluster: Boolean = false,
 )
 
 /**
@@ -160,6 +162,7 @@ object CarPlaySettingsPolicy {
                 forceBydExtrasOff = !byd,
                 oemLabel = if (byd) DIPLAY_DEFAULT_OEM_LABEL else brandName,
                 replaceableOemLabels = setOf(DIPLAY_DEFAULT_OEM_LABEL, brandName, ""),
+                leapmotorCluster = profile == VehicleProfile.LEAPMOTOR_C01,
             ),
             wheelKeyRemap = if (transportOnly) emptyMap() else WheelKeys.remap(settings.wheelKeys),
             // Only CarLink sets it (no CarLink screen shows DiPlay's switch): on exactly when a call key is learned.
@@ -212,13 +215,18 @@ object CarPlaySettingsPolicy {
             off(BydOutputSettings::clusterSong, BydOutputSettings::setClusterSong)
             off(BydOutputSettings::hudSong, BydOutputSettings::setHudSong)
             off(BydOutputSettings::carPlayCalls, BydOutputSettings::setCarPlayCalls)
-            off(AirPlayPersistence::loadClusterMapEnabled, AirPlayPersistence::saveClusterMapEnabled)
+            // LPlay: the Leapmotor profile keeps the cluster map on or off as the driver chose (below).
+            if (!vehicle.leapmotorCluster) off(AirPlayPersistence::loadClusterMapEnabled, AirPlayPersistence::saveClusterMapEnabled)
             off(AirPlayPersistence::loadCenterMapOverlay, AirPlayPersistence::saveCenterMapOverlay)
             off(AirPlayPersistence::loadAdbClusterEnabled, AirPlayPersistence::saveAdbClusterEnabled)
             off(CarHotspotSettings::enabled, CarHotspotSettings::setEnabled)
             if (BydOutputSettings.oemClusterHold(context) != BydOemClusterHold.OFF) {
                 BydOutputSettings.setOemClusterHold(context, BydOemClusterHold.OFF)
             }
+        }
+        if (vehicle.leapmotorCluster) { // LPlay: the engine's own gates follow the driver's cluster switch
+            val on = uz.carhelper.lplay.cluster.ClusterPrefs.load(context).enabled
+            if (AirPlayPersistence.loadClusterMapEnabled(context) != on) AirPlayPersistence.saveClusterMapEnabled(context, on)
         }
         // Replace only a default label, so a name the driver typed in the CarPlay menu stays.
         if (AirPlayPersistence.loadOemLabel(context) in vehicle.replaceableOemLabels) {

@@ -151,6 +151,7 @@ internal val SettingsCategory.selectedIcon: Int
 internal enum class EssentialSheet {
     CONNECTION_METHOD, CAR_HOTSPOT, SAME_WIFI, PICTURE, INTERFACE_SIZE, DAY_NIGHT, NIGHT_START, NIGHT_END,
     DRIVING_SIDE, SOUND, APPEARANCE, LAYOUT, CARLINK_SIZE, RENDERING, CAR_BRAND, WHEEL_KEYS,
+    CLUSTER_FADE, // LPlay
 }
 
 internal object SheetKey {

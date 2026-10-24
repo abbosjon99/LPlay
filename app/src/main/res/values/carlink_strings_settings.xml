@@ -211,6 +211,20 @@
     <!-- What the detection found: a generic screen, or a BYD DiLink unit. -->
     <string name="carlink_settings_car_generic">Generic</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
+    <!-- LPlay: the Leapmotor instrument cluster (Settings > Car). -->
+    <string name="lplay_cluster_group">Instrument cluster</string>
+    <string name="lplay_cluster_map">Map on the instrument cluster</string>
+    <string name="lplay_cluster_map_detail">Shows the CarPlay map in a square window at the right of the cluster. Test it with the card below first.</string>
+    <string name="lplay_cluster_fade">Fade the map’s left edge</string>
+    <string name="lplay_cluster_fade_detail">Lets the car’s own cluster picture show through the map’s left side</string>
+    <string name="lplay_cluster_fade_sheet_body">How far into the map the fade reaches, as a share of its width.</string>
+    <string name="lplay_cluster_fade_off">Off</string>
+    <string name="lplay_cluster_fade_value">%1$d %%</string>
+    <string name="lplay_cluster_test">Cluster test card</string>
+    <string name="lplay_cluster_test_detail">Shows a numbered grid on the cluster for 20 seconds, to check which display it is and what part shows. Park the car first.</string>
+    <string name="lplay_cluster_test_show">Show</string>
+    <string name="lplay_cluster_test_shown">Shown</string>
+    <string name="lplay_cluster_test_none">No cluster display found</string>
     <string name="lplay_settings_car_leapmotor">Leapmotor C01</string>
     <string name="lplay_settings_car_leapmotor_extras">Dashboard map</string>
     <string name="lplay_settings_car_explain_leapmotor">Leapmotor C01 sends the dashboard map to the instrument cluster and leaves the steering-wheel buttons, dock and voice to the car’s own music app.</string>
