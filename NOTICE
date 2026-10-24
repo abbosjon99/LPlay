@@ -1,0 +1,40 @@
+LPlay
+=====
+
+LPlay is a modified version of CarLink (https://github.com/F-e-n-y-x/CarLink) by F-e-n-y-x, adapted for the
+Leapmotor C01 (2024-2026) head unit. It is distributed under the GNU Affero General Public License, version 3
+(see LICENSE), the same licence as CarLink. LPlay is not affiliated with or endorsed by CarLink's author, by
+Leapmotor, Apple or Google.
+
+What LPlay changes is listed in docs/LPLAY.md and marked in the code with "// LPlay" comments; the history of
+every change is in git (the branch "lplay" is the unmodified CarLink release plus the LPlay commits, one per change).
+The original copyright and licence notices of every part are kept as they were.
+
+Software LPlay is built from
+----------------------------
+- CarLink, by F-e-n-y-x. GNU AGPL v3. The app, its connection logic and its screens.
+  https://github.com/F-e-n-y-x/CarLink
+- DiPlay, the CarPlay engine (vendor/diplay), by shihabal3amri. GNU GPL v3. A modified version of xcertplay by
+  shilapi (GNU GPL v3), which credits LIVI and Showcase for protocol research.
+  https://github.com/shihabal3amri/DiPlay
+- DiAuto, the Android Auto engine (vendor/diauto), by shihabal3amri. GNU AGPL v3. An independent fork of Open
+  Headunit (formerly Headunit Revived, (c) 2025 Andre Rinas and contributors), which derives from "headunit",
+  (c) 2011-2015 Michael A. Reid, GNU AGPL v3 (vendor/diauto/COPYRIGHT_MICHAEL_REID_GPLv3AFFERO.txt).
+  https://github.com/shihabal3amri/DiAuto
+- Libraries bundled by those projects (FFmpeg, libusb, SpeexDSP and others) keep their own licences, listed in the
+  app's About > Open-source licenses.
+
+Ideas credited
+--------------
+- The fade on the cluster map's left edge follows an idea from the C11 fork by w012w012
+  (https://github.com/w012w012/DiPlay-Leapmotor, GNU GPL v3). The code in LPlay is new.
+
+Parts that are not under the AGPL
+---------------------------------
+- The BYD HUD manoeuvre icons (BYDMate, (c) AndyShaman, PolyForm Noncommercial License 1.0.0) are in the CarLink
+  tree and are not covered by the AGPL. They are used only by the BYD integrations, which LPlay never turns on.
+
+Source
+------
+The licence entitles every recipient of an LPlay build to its complete source: CarLink at the tag named in the
+patcher's UPSTREAM file plus the LPlay patch series (or the "lplay" branch of the fork, which is that same tree).
