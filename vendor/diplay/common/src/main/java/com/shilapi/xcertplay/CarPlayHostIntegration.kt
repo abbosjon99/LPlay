@@ -51,6 +51,32 @@ object CarPlayHostIntegration {
     @JvmStatic
     var clusterRoute: ClusterRouteHook? = null
 
+    /**
+     * LPlay: sees every key event that reaches the projection window while [transportOnlyMedia] is on, before the window
+     * passes it on unchanged (the wheel button recorder). Never consumes or changes the event.
+     */
+    @Volatile
+    @JvmStatic
+    var keyObserver: ((android.view.KeyEvent) -> Unit)? = null
+
+    /** LPlay: what a car button (learned by the host) asks of the phone session. */
+    enum class WheelCommand { ANSWER, HANG_UP, ASSISTANT }
+
+    /**
+     * LPlay: performs [command] on the running CarPlay session (answer or end the call, start Siri). False when there is
+     * no session or the iPhone could not be told. Main thread.
+     */
+    @JvmStatic
+    fun performWheelCommand(command: WheelCommand): Boolean {
+        val controller = CarPlayBackgroundSession.snapshot()?.controller ?: return false
+        if (controller.activeAirPlaySessionToken() == null) return false
+        return when (command) {
+            WheelCommand.ANSWER -> controller.answerCall()
+            WheelCommand.HANG_UP -> controller.endCall()
+            WheelCommand.ASSISTANT -> controller.requestSiri()
+        }
+    }
+
     /** [event] with its key code replaced per [keyRemap], or [event] itself. */
     internal fun remapKey(event: android.view.KeyEvent): android.view.KeyEvent {
         val code = keyRemap[event.keyCode] ?: return event

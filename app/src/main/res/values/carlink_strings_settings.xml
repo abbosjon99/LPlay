@@ -211,6 +211,20 @@
     <!-- What the detection found: a generic screen, or a BYD DiLink unit. -->
     <string name="carlink_settings_car_generic">Generic</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
+    <!-- LPlay: the car's own buttons (Settings > Car). -->
+    <string name="lplay_wheel_group">Car buttons</string>
+    <string name="lplay_wheel_recorder">Record the car’s buttons</string>
+    <string name="lplay_wheel_recorder_detail">Writes down what the steering wheel, voice and phone buttons send, for 15 minutes. It only listens. Park the car first.</string>
+    <string name="lplay_wheel_share">Share the recording</string>
+    <string name="lplay_wheel_share_detail">Sends the recorded lines as a text file</string>
+    <string name="lplay_wheel_lines">%1$d lines</string>
+    <string name="lplay_wheel_answer">Answer call button</string>
+    <string name="lplay_wheel_hangup">Hang-up button</string>
+    <string name="lplay_wheel_assistant">Assistant button (Siri, Google)</string>
+    <string name="lplay_wheel_learn_detail">Tap, then press the button on the car within 20 seconds. The car’s own apps still get it too.</string>
+    <string name="lplay_wheel_press_now">Press the button now</string>
+    <string name="lplay_wheel_clear">Forget the learned buttons</string>
+    <string name="lplay_wheel_clear_detail">The car’s buttons then do nothing in LPlay</string>
     <!-- LPlay: the Leapmotor instrument cluster (Settings > Car). -->
     <string name="lplay_cluster_group">Instrument cluster</string>
     <string name="lplay_cluster_map">Map on the instrument cluster</string>

@@ -1643,7 +1643,10 @@ class CarPlayHostActivity : ComponentActivity() {
     // Hardware navigation belongs to the iPhone-rendered CarPlay UI, not Android View focus.
     override fun dispatchKeyEvent(original: KeyEvent): Boolean {
         // LPlay: the car owns the wheel; system keys (volume, back) must still work, so pass the event on unchanged.
-        if (CarPlayHostIntegration.transportOnlyMedia) return super.dispatchKeyEvent(original)
+        if (CarPlayHostIntegration.transportOnlyMedia) {
+            CarPlayHostIntegration.keyObserver?.invoke(original)
+            return super.dispatchKeyEvent(original)
+        }
         val event = CarPlayHostIntegration.remapKey(original) // CarLink: learned steering-wheel keys
         val physicalKey = Triple(event.deviceId, event.keyCode, event.scanCode)
         val downOrUp = event.action == KeyEvent.ACTION_DOWN || event.action == KeyEvent.ACTION_UP

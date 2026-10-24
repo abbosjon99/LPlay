@@ -225,6 +225,7 @@ private fun CarEssentials(ui: SettingsUi, openSheet: (String) -> Unit) {
     // LPlay: the instrument cluster map (Leapmotor C01 only).
     if ((ui.carBrand ?: ui.detectedBrand)?.profile == com.carlink.core.settings.VehicleProfile.LEAPMOTOR_C01) {
         ClusterSettingsGroup(openSheet)
+        WheelButtonsGroup()
     }
 }
 
