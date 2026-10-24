@@ -290,6 +290,7 @@ private fun SourceCard() {
 /** "Check for updates" with the answer under it, and the automatic-check switch. */
 @Composable
 private fun UpdatesCard(facts: AboutFacts, updates: AboutUpdatesUi, actions: AboutUpdateActions) {
+    if (!updates.supported) return // LPlay: no updater, so no card that says "install the release from GitHub"
     val colors = CarLinkTokens.colors
     val scheme = MaterialTheme.colorScheme
     val state = updates.state

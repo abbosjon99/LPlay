@@ -20,7 +20,11 @@
     <!-- The in-app updater (update/): asks GitHub for the latest release and installs a verified
          APK with PackageInstaller. Both are also declared by the engines; listed here for CarLink. -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- LPlay: no self-update, so no permission to install packages (the DiPlay engine declares it too). -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" tools:node="remove" />
+    <!-- LPlay: DiAuto's fixed permission name would block installing LPlay next to CarLink or DiAuto
+         (INSTALL_FAILED_DUPLICATE_PERMISSION, different signer). Nothing in LPlay needs it. -->
+    <permission android:name="com.andrerinas.openheadunit.permission.NAVIGATION_UPDATE" tools:node="remove" />
 
     <!-- "Report a problem on GitHub" asks whether any browser opens web links (Android 11+ package visibility). -->
     <queries>
@@ -74,6 +78,15 @@
         <receiver
             android:name=".update.UpdateInstallReceiver"
             android:exported="false" />
+
+        <!-- LPlay: the DiPlay engine's updater file provider and its steering-wheel accessibility service are
+             not part of the car build (the wheel buttons belong to the car's own music app). -->
+        <provider
+            android:name="com.shilapi.xcertplay.update.UpdateApkProvider"
+            tools:node="remove" />
+        <service
+            android:name="com.shilapi.xcertplay.WheelKeyService"
+            tools:node="remove" />
 
         <!-- Shares Diagnostics' connection log (cache/shared only); independent of the engines' providers. -->
         <provider

@@ -634,7 +634,9 @@ private fun ColumnScope.HeroCopy(mode: HomeMode, ui: HomeUi, actions: HomeAction
             HomeMode.FAILED -> {
                 FailureActions(link, ui.network, actions)
                 // The log and the error go straight into a GitHub issue (no copying from the stereo).
-                TertiaryButton(stringResource(R.string.carlink_report_action), actions::reportProblem, icon = R.drawable.carlink_ic_bug_report)
+                if (com.carlink.app.diagnostics.GitHubIssueReport.ENABLED) { // LPlay: no report on CarLink's tracker
+                    TertiaryButton(stringResource(R.string.carlink_report_action), actions::reportProblem, icon = R.drawable.carlink_ic_bug_report)
+                }
             }
         }
     }

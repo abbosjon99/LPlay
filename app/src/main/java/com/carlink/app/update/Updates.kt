@@ -24,9 +24,8 @@ object Updates {
      * Only the official release updates itself: a release build of [RELEASE_PACKAGE] signed with
      * the release key. A build signed with another key could not install the update anyway.
      */
-    fun isSupported(context: Context): Boolean =
-        !BuildConfig.DEBUG && context.packageName == RELEASE_PACKAGE &&
-            AndroidApkInspector.ownSigners(context) == setOf(ReleaseKey.normalized)
+    @Suppress("UNUSED_PARAMETER")
+    fun isSupported(context: Context): Boolean = false // LPlay: no self-update; LPlay is installed by hand, never from CarLink's releases
 
     private fun create(app: Context): UpdateController {
         val current = AppVersion.parseVersionName(BuildConfig.VERSION_NAME) ?: AppVersion(0, 0, 0)

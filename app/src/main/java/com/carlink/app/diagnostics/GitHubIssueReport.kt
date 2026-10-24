@@ -25,6 +25,12 @@ import java.util.TimeZone
  * they stay empty, so the labels below must match the form word for word (a test reads the form).
  */
 object GitHubIssueReport {
+    /**
+     * LPlay: the "Report a problem on GitHub" buttons are hidden. They open CarLink's own issue tracker, and a
+     * problem in LPlay is not CarLink's to triage. "Share log" stays. Set this to true and change [NEW_ISSUE] if
+     * LPlay gets a tracker of its own.
+     */
+    const val ENABLED = false
     const val NEW_ISSUE = "https://github.com/F-e-n-y-x/CarLink/issues/new"
     const val TEMPLATE = "bug_report.yml"
 

@@ -555,7 +555,9 @@ private fun LogPanel(log: List<LogLine>?, filter: LogFilter, onFilter: (LogFilte
                 androidx.compose.foundation.layout.FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(CarLinkTokens.dimens.targetGap),
                     verticalArrangement = Arrangement.spacedBy(CarLinkTokens.dimens.targetGap)) {
-                    GlassButton(stringResource(R.string.carlink_report_action), onReport, icon = R.drawable.carlink_ic_bug_report)
+                    if (com.carlink.app.diagnostics.GitHubIssueReport.ENABLED) { // LPlay: no report on CarLink's tracker
+                        GlassButton(stringResource(R.string.carlink_report_action), onReport, icon = R.drawable.carlink_ic_bug_report)
+                    }
                     GlassButton(stringResource(R.string.carlink_diag_log_share), onShare, icon = R.drawable.carlink_ic_ios_share)
                 }
                 Spacer(Modifier.height(if (isCar) 18.dp else 12.dp))
