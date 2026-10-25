@@ -64,7 +64,7 @@ android {
         // Releases: change versionName only. versionCode = major * 10000 + minor * 100 + patch
         // (1.0.0 → 10000, 1.2.3 → 10203), so minor and patch stay below 100. The in-app updater
         // (update/AppVersion.kt) and scripts/release.sh rely on it; docs/RELEASING.md.
-        versionName = "1.0.6"
+        versionName = "0.1.0" // LPlay: its own number; the CarLink release it is based on is in NOTICE and About
         versionCode = carLinkVersionCode(versionName!!)
         buildConfigField("String", "DIPLAY_VERSION_NAME", "\"$diPlayVersionName\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

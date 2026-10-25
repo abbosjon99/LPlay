@@ -164,3 +164,25 @@ gets them; the app manifest adds only `HomeActivity` and CarLink's UI entries.
 - DiAuto's `CarKeyReceiver`, `RemoteControlReceiver` and `MediaButtonReceiver` ship disabled.
   `connection/DeviceEnvironment` enables them only while Android Auto is engaged: `CarKeyReceiver` aborts
   every ordered key broadcast and would otherwise take the steering-wheel keys from CarPlay.
+
+## LPlay (Leapmotor C01) edits
+
+LPlay is a patch series on CarLink 1.0.6 (see [LPLAY.md](LPLAY.md)). Its edits inside `vendor/` carry a `// LPlay` comment (new
+files say so in their header). Each one is off unless the host sets the hook or flag, so the engines behave as before for any
+other host.
+
+| File | Change | Why |
+|---|---|---|
+| `diplay/common/.../CarPlayHostIntegration.kt` | `transportOnlyMedia`, `clusterRoute` (`ClusterRouteHook`), `keyObserver`, `WheelCommand` and `performWheelCommand` | The Leapmotor profile: no wheel handling, the cluster window, the car-button recorder and learned buttons. |
+| `diplay/common/.../ClusterRouteHook.kt` (new) | The calls the host makes on the adb cluster route, as an interface | Lets the host's cluster window stand in for DiPlay's BYD presentations. |
+| `diplay/common/.../CarPlayHostActivity.kt` | `dispatchKeyEvent` passes events on unchanged when `transportOnlyMedia` (after the key observer); `CarPlayCallKeys.install` and `WheelKeyService.restoreIfNeeded` are skipped; every `ClusterActivityOutput` / `AdbClusterRouter.enabled` call goes through `clusterRoute*()` helpers that use the hook when set; `hookClusterConfig` | Same. |
+| `diplay/common/.../CarPlayMediaKeys.kt` | `GeelyWheelKeys.start` skipped, hardware media-button events ignored, now-playing notification refreshed, `transport()` | Transport-only media. |
+| `diplay/common/.../NowPlayingNotification.kt` (new), `DiPlaySessionService.kt`, `res/values/lplay_strings.xml` (new) | The iPhone's track as the service notification, with transport buttons | The only notification on this profile. |
+| `diauto/app/.../HostIntegration.kt` | `clusterRoute` and `AaClusterRouteHook` | The Android Auto cluster window. |
+| `diauto/app/.../hud/ClusterMapScreen.kt` | `show` / `dismiss` hand the map to the host's window (`showHostWindow`, `onHostSurface`, `dismissHostWindow`) | Same. |
+| `diauto/app/.../hud/ClusterMapConfig.kt`, `aap/protocol/messages/ClusterDisplayServices.kt` | `squareProfile` (a 720x720 square in a 1280x720 codec frame, margins or full picture), used when `lplayClusterWindow` is on | Same. |
+| `diauto/app/.../utils/Settings.kt` | `transportOnlyMedia`, `lplayClusterWindow`, `lplayClusterMode`, `lplayClusterDisplay`, `lplayClusterFade` | Written by the host each session. |
+| `diauto/app/.../aap/AapService.kt` | Media session ignores hardware media-button events and drops `FLAG_HANDLES_MEDIA_BUTTONS` when `transportOnlyMedia`; `CarKeysManager.registerReceivers` skipped | Transport-only media; the vendor key receivers abort ordered key broadcasts. |
+| `app/src/main/AndroidManifest.xml` (LPlay's own) | `tools:node="remove"` for `REQUEST_INSTALL_PACKAGES`, DiAuto's `NAVIGATION_UPDATE` permission, DiPlay's `UpdateApkProvider` and `WheelKeyService` | No updater; no install collision with CarLink or DiAuto; no wheel accessibility service. |
+
+Audit: `grep -rn "LPlay" vendor/`.

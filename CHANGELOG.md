@@ -4,6 +4,10 @@ CarLink's releases, newest first. Versions follow `major.minor.patch`; each one 
 [GitHub](https://github.com/F-e-n-y-x/CarLink/releases) with its APK. The text under each version
 is what the in-app update popup shows.
 
+## [LPlay 0.1.0] - not released
+
+- First LPlay build: CarLink 1.0.6 for the Leapmotor C01. See docs/LPLAY.md for every change and the parked-car test plan.
+
 ## [1.0.6] - 2026-10-20
 
 - Faster connections: USB Android Auto in about 1.3 s (was 3.2 s), wireless Android Auto in about 3 s.

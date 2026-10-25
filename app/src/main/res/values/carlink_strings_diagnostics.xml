@@ -196,7 +196,7 @@
     <!-- ===== About ===== -->
     <string name="carlink_about_title">About</string>
     <string name="carlink_about_tagline">CarPlay and Android Auto for the Leapmotor C01, in one app.</string>
-    <string name="lplay_about_based_on">Based on CarLink by F-e-n-y-x</string>
+    <string name="lplay_about_based_on">Based on CarLink 1.0.6 by F-e-n-y-x</string>
     <!-- The version as a tag under the name, e.g. "Version 0.1.0 (1)". -->
     <string name="carlink_about_version_tag">Version %1$s</string>
     <string name="carlink_about_engines">Engines</string>

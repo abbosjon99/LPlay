@@ -79,7 +79,7 @@ class ConnectionLogTest {
         assertEquals(listOf("aa second", "Coordinator: carlink event", "aa first"), lines.map { it.text })
 
         val file = ConnectionLog.export(context, "header")
-        assertTrue(file.path.contains("/cache/shared/"))
+        assertTrue(file.invariantSeparatorsPath.contains("/cache/shared/")) // LPlay: Windows paths use backslashes
         val text = file.readText()
         assertTrue(text.startsWith("header"))
         assertTrue(text.indexOf("aa first") < text.indexOf("aa second"))

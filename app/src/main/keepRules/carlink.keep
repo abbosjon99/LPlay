@@ -32,3 +32,4 @@
 -keep,allowshrinking,allowobfuscation,allowaccessmodification class com.shilapi.**
 -keep,allowshrinking,allowobfuscation,allowaccessmodification class com.andrerinas.**
 -keep,allowshrinking,allowobfuscation,allowaccessmodification class com.byd.spi.**
+-keep,allowshrinking,allowobfuscation,allowaccessmodification class uz.carhelper.lplay.**

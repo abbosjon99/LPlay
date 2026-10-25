@@ -1,3 +1,13 @@
+# LPlay
+
+**LPlay is [CarLink](https://github.com/F-e-n-y-x/CarLink) by F-e-n-y-x, adapted for the Leapmotor C01 (2024-2026).** It is a modified
+version of CarLink under the same licence (GNU AGPL-3.0, see [LICENSE](LICENSE) and [NOTICE](NOTICE)), kept as a short series of
+patches on one CarLink release, so CarLink's updates can be taken in. What it changes, how to build it and the parked-car test
+plan are in [docs/LPLAY.md](docs/LPLAY.md); every edit inside the vendored engines is listed in
+[docs/VENDOR_CHANGES.md](docs/VENDOR_CHANGES.md). The rest of this page is CarLink's own README, unchanged.
+
+---
+
 <div align="center">
 
 <picture>
