@@ -180,6 +180,12 @@ object WheelBindingReceiver {
     private val lastPerformed = HashMap<WheelCommand, Long>()
     private var installed = false
 
+    /** What runs a command; the engine in this process in the app, a recorder in the unit tests. */
+    @Volatile internal var performer: (Context, WheelCommand) -> Boolean = ::perform
+
+    /** Forgets the last presses, for the unit tests. */
+    internal fun resetDebounce() = synchronized(lastPerformed) { lastPerformed.clear() }
+
     fun install(context: Context) {
         synchronized(this) {
             if (installed) return
@@ -194,7 +200,7 @@ object WheelBindingReceiver {
         }
     }
 
-    private fun onBroadcast(context: Context, intent: Intent) {
+    internal fun onBroadcast(context: Context, intent: Intent) {
         if (!WheelBindings.isEnabled(context)) return // learned buttons do nothing until the driver turns them on
         val commands = WheelBindings.commandsFor(WheelBindings.load(context), intent)
         if (commands.isEmpty()) return
@@ -203,7 +209,7 @@ object WheelBindingReceiver {
             synchronized(lastPerformed) {
                 if (now - (lastPerformed[command] ?: -DEBOUNCE_MILLIS) < DEBOUNCE_MILLIS) return@synchronized
                 lastPerformed[command] = now
-                val done = perform(context, command)
+                val done = performer(context, command)
                 Log.i(TAG, "car button ${command.storageKey} (${intent.action}): performed=$done")
             }
         }

@@ -85,6 +85,38 @@ class WheelBindingTest {
         assertTrue(WheelBindings.commandsFor(bindings, press(code = 7)).isEmpty())
     }
 
+    private fun pressed(code: Int, action: String = "com.leapmotor.steerwheelcontrol.phone") = Intent(action).putExtra("action", code)
+
+    @Test fun aLearnedButtonActsOnlyWhenTheSwitchIsOnAndDebouncesRepeats() {
+        val done = mutableListOf<WheelCommand>()
+        WheelBindingReceiver.performer = { _, command -> done += command; true }
+        WheelBindingReceiver.resetDebounce()
+        try {
+            WheelBindings.set(context, WheelCommand.ANSWER, WheelSignature("com.leapmotor.steerwheelcontrol.phone", mapOf("action" to 1)))
+            WheelBindings.set(context, WheelCommand.HANG_UP, WheelSignature("com.leapmotor.steerwheelcontrol.phone", mapOf("action" to 4)))
+
+            // Off by default: nothing is performed.
+            WheelBindingReceiver.onBroadcast(context, pressed(1))
+            assertTrue(done.isEmpty())
+
+            WheelBindings.setEnabled(context, true)
+            WheelBindingReceiver.onBroadcast(context, pressed(1))
+            assertEquals(listOf(WheelCommand.ANSWER), done)
+            // The same press again within the debounce window is ignored; another button is not.
+            WheelBindingReceiver.onBroadcast(context, pressed(1))
+            WheelBindingReceiver.onBroadcast(context, pressed(4))
+            assertEquals(listOf(WheelCommand.ANSWER, WheelCommand.HANG_UP), done)
+            // A button nobody learned, and a learned action from another channel, do nothing.
+            WheelBindingReceiver.onBroadcast(context, pressed(7))
+            WheelBindingReceiver.onBroadcast(context, pressed(1, action = "com.leapmotor.steerwheelcontrol.media"))
+            assertEquals(2, done.size)
+        } finally {
+            WheelBindingReceiver.performer = { c, command -> WheelBindingReceiver.perform(c, command) }
+            WheelBindingReceiver.resetDebounce()
+            WheelBindings.setEnabled(context, false)
+        }
+    }
+
     @Test fun theRecorderListsEveryExtraWithItsType() {
         val line = WheelButtonRecorder.describe(press(code = 4).putExtra("who", "wheel"), "12:00:00.000")
         assertEquals("12:00:00.000 com.leapmotor.steerwheelcontrol.phone action=4<Integer> who=wheel<String>", line)
