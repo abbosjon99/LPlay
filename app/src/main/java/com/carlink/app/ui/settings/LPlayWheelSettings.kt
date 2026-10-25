@@ -29,6 +29,7 @@ internal fun WheelButtonsGroup() {
     val context = LocalContext.current
     var version by remember { mutableIntStateOf(0) }
     val bindings = remember(version) { WheelBindings.load(context) }
+    val enabled = remember(version) { WheelBindings.isEnabled(context) }
     var learning by remember { mutableStateOf<WheelCommand?>(null) }
     var recording by remember { mutableStateOf(WheelButtonRecorder.running) }
     GlassGroup(header = { GroupHeader(stringResource(R.string.lplay_wheel_group)) }) {
@@ -44,6 +45,10 @@ internal fun WheelButtonsGroup() {
         ChoiceRow(stringResource(R.string.lplay_wheel_share), stringResource(R.string.lplay_wheel_lines, lines),
             { shareRecording(context) },
             description = stringResource(R.string.lplay_wheel_share_detail), icon = R.drawable.carlink_ic_ios_share)
+        GroupDivider()
+        SwitchRow(stringResource(R.string.lplay_wheel_act), enabled,
+            { on -> WheelBindings.setEnabled(context, on); version++ },
+            description = stringResource(R.string.lplay_wheel_act_detail), icon = R.drawable.carlink_ic_link_off)
         WheelCommand.entries.forEach { command ->
             GroupDivider()
             val signature = bindings[command]

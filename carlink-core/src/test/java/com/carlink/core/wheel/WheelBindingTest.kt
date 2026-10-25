@@ -64,6 +64,17 @@ class WheelBindingTest {
         assertNotNull(WheelBindings.load(context)[WheelCommand.ASSISTANT])
     }
 
+    @Test fun learnedButtonsDoNothingUntilTheDriverTurnsThemOn() {
+        assertFalse(WheelBindings.isEnabled(context))
+        WheelBindings.setEnabled(context, true)
+        assertTrue(WheelBindings.isEnabled(context))
+        // Saving or clearing the bindings does not change the switch.
+        WheelBindings.save(context, emptyMap())
+        assertTrue(WheelBindings.isEnabled(context))
+        WheelBindings.setEnabled(context, false)
+        assertFalse(WheelBindings.isEnabled(context))
+    }
+
     @Test fun aBroadcastFindsTheCommandsLearnedForIt() {
         val bindings = mapOf(
             WheelCommand.ANSWER to WheelSignature("com.leapmotor.steerwheelcontrol.phone", mapOf("action" to 1)),

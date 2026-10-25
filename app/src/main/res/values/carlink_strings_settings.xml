@@ -221,6 +221,8 @@
     <string name="lplay_wheel_answer">Answer call button</string>
     <string name="lplay_wheel_hangup">Hang-up button</string>
     <string name="lplay_wheel_assistant">Assistant button (Siri, Google)</string>
+    <string name="lplay_wheel_act">Let the learned buttons act</string>
+    <string name="lplay_wheel_act_detail">Off by default. Off: the buttons are only learned; nothing is sent to the phone. On: the answer, hang-up and assistant buttons control the CarPlay or Android Auto call.</string>
     <string name="lplay_wheel_learn_detail">Tap, then press the button on the car within 20 seconds. The car’s own apps still get it too.</string>
     <string name="lplay_wheel_press_now">Press the button now</string>
     <string name="lplay_wheel_clear">Forget the learned buttons</string>

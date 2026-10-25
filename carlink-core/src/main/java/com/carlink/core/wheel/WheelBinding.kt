@@ -74,6 +74,7 @@ data class WheelSignature(val action: String, val ints: Map<String, Int>) {
  */
 object WheelBindings {
     private const val FILE = "lplay_wheel_bindings.txt"
+    private const val ENABLED_FILE = "lplay_wheel_enabled"
 
     private fun file(context: Context) = File(context.applicationContext.filesDir, FILE)
 
@@ -93,6 +94,21 @@ object WheelBindings {
                 .joinToString("\n") { "${it.key.storageKey}=${it.value.serialize()}" })
         }
     }
+
+    /**
+     * Whether the learned buttons act at all. Off until the driver turns it on: a button can be learned and recorded first,
+     * and nothing reaches the phone session until this is switched on. A marker file, so the engine process sees it too.
+     */
+    fun isEnabled(context: Context): Boolean = runCatching { enabledFile(context).isFile }.getOrDefault(false)
+
+    fun setEnabled(context: Context, enabled: Boolean) {
+        runCatching {
+            val marker = enabledFile(context)
+            if (enabled) marker.writeText("on") else marker.delete()
+        }
+    }
+
+    private fun enabledFile(context: Context) = File(context.applicationContext.filesDir, ENABLED_FILE)
 
     fun set(context: Context, command: WheelCommand, signature: WheelSignature?) {
         val next = load(context).toMutableMap()
@@ -179,6 +195,7 @@ object WheelBindingReceiver {
     }
 
     private fun onBroadcast(context: Context, intent: Intent) {
+        if (!WheelBindings.isEnabled(context)) return // learned buttons do nothing until the driver turns them on
         val commands = WheelBindings.commandsFor(WheelBindings.load(context), intent)
         if (commands.isEmpty()) return
         val now = SystemClock.elapsedRealtime()
