@@ -84,6 +84,27 @@ engines by hand from DiPlay and DiAuto, so their updates arrive with CarLink's.
 - **Car buttons:** the recorder, "share the recording", and the three Learn rows.
 - The learned-wheel-keys row, the root switch and the car-brand list of other makes are gone.
 
+## What was checked without a car
+
+On an Android 12 x86_64 emulator with a simulated second display of 1920x720 (`adb shell settings put global overlay_display_devices
+1920x720/213`, which becomes display id 2 like the car's cluster), with the debug build and with the R8-shrunk release build:
+
+- Setup, Home and Settings > Car for the Leapmotor profile: the brand note, the instrument-cluster group, the fade sheet, the Android
+  Auto picture sheet, the car-button group; no steering-wheel row, no BYD wording on the normal path. No error or warning from the app
+  in the log, 119 MB PSS in Settings, only the main process runs (the `:aa` process does not start), cold start about 2 s.
+- The cluster test card lands on display 2 as a 720x720 square at the top right (its four corner colours and grid read correctly).
+- `ClusterWindowInstrumentedTest` (`./gradlew :lplay-cluster:connectedDebugAndroidTest`, emulator only): the real route starts the real
+  window on that display, the window confirms its display, hands over a Surface, shows frames drawn into it (the test plays the
+  decoder), shows the 20 % fade on its left edge, and closes again. A screenshot of the display (`adb shell screencap -d 2`) shows
+  the square, its place and the fade.
+- Car buttons: the recorder writes the car's broadcasts, Learn stores the next one, and nothing acts until "Let the learned buttons act"
+  is on; with it on, a learned press reaches the engine hook (no session on an emulator, so it reports "performed=false").
+- 12 route tests and the receiver tests (Robolectric) in the normal build.
+
+Not checked: the CarPlay and Android Auto decoders feeding the window, a phone of either kind, the car's own firmware (whether it shows
+the window, covers it, or needs the activation signal), and anything that depends on the car's apps. The parked-car test plan below
+covers those.
+
 ## Parked-car test plan
 
 Rules for every step: car parked, nobody in the passenger seat, never in child mode, do not change the car's ADB, developer or
