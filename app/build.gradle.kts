@@ -95,7 +95,8 @@ android {
     // x86_64 is only for the emulator: debug builds carry it, release builds only with
     // -Pcarlink.emulatorAbi=true (measuring a release build on the emulator). It is 3.3 MB of
     // native code no car stereo runs (docs/LOW_END_PERFORMANCE.md).
-    val armAbis = listOf("arm64-v8a", "armeabi-v7a")
+    // LPlay: -Plplay.arm64Only=true drops the 32-bit libraries (about 2 MB) for a head unit whose ABI list starts with arm64-v8a.
+    val armAbis = if (providers.gradleProperty("lplay.arm64Only").orNull == "true") listOf("arm64-v8a") else listOf("arm64-v8a", "armeabi-v7a")
     val releaseEmulatorAbi = providers.gradleProperty("carlink.emulatorAbi").orNull == "true"
     buildTypes {
         debug {

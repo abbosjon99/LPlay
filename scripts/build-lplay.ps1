@@ -27,6 +27,7 @@ param(
     [string]$AndroidSdk = $env:ANDROID_HOME,
     [switch]$RunTests,
     [switch]$NoSubst,
+    [switch]$Arm64Only,
     [string]$Output = ""
 )
 
@@ -84,6 +85,7 @@ try {
     $tasks = @()
     if ($RunTests) { $tasks += ":lplay-cluster:testDebugUnitTest", ":carlink-core:testDebugUnitTest", ":app:testDebugUnitTest" }
     $tasks += ":app:assembleRelease"
+    if ($Arm64Only) { $tasks += "-Plplay.arm64Only=true" } # about 2 MB smaller; only for a head unit that runs 64-bit apps
     & "$work\gradlew.bat" --console=plain @tasks
     if ($LASTEXITCODE -ne 0) { throw "Gradle failed with exit code $LASTEXITCODE" }
 
