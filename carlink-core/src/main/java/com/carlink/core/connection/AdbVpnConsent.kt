@@ -23,6 +23,8 @@ object AdbVpnConsent {
     /** True when wired CarPlay's VPN consent is granted, after one silent adb attempt if it was not. */
     fun ensure(context: Context): Boolean {
         val app = context.applicationContext
+        // LPlay: no adb attempt on the Leapmotor C01; Android's own consent dialog does the job.
+        if (!Connection.vehicleProfile(app).localAdbHelpers) return runCatching { VpnService.prepare(app) == null }.getOrDefault(false)
         return ensure({ runCatching { VpnService.prepare(app) == null }.getOrDefault(false) }, tried, BUDGET_MILLIS) {
             EventLog.add("CarLink", "VPN consent over adb: ${VpnPreConsent.grant(app)}")
         }

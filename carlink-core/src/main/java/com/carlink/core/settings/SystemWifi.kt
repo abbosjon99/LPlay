@@ -37,6 +37,8 @@ object SystemWifi {
         runCatching { HotspotConfigReader.getSystemHotspotConfig(context) }.getOrNull()
             ?.let { (ssid, password) -> WifiDetails(ssid, password) }?.takeIf { it.isValid() }
             ?.let { log("hotspot read by the app"); return it }
+        // LPlay: the head unit's adb and root are not used on the Leapmotor C01 (VehicleProfile.localAdbHelpers).
+        if (!com.carlink.core.connection.Connection.vehicleProfile(context).localAdbHelpers) return null
         runCatching { CarHotspotConfigRead.read(context, log = ::log) }.getOrNull()?.credentials
             ?.let { WifiDetails(it.ssid, it.passphrase) }?.takeIf { it.isValid() }
             ?.let { log("hotspot read through local ADB"); return it }
@@ -54,6 +56,7 @@ object SystemWifi {
      * local ADB; may show "Allow debugging?"). Android 8-10 refuse even the shell.
      */
     fun writeHotspot(context: Context, details: WifiDetails): Write {
+        if (!com.carlink.core.connection.Connection.vehicleProfile(context).localAdbHelpers) return Write.NO_ACCESS // LPlay
         if (!CarHotspotConfigWrite.supported()) return Write.NO_ACCESS
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val access = runCatching { LocalAdb(AdbKeys.load(context)).use { it.connect(mayAsk = true) } }.getOrNull()

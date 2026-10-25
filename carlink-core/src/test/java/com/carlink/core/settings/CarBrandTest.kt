@@ -44,6 +44,14 @@ class CarBrandTest {
         assertEquals(VehicleProfile.GENERIC, VehicleProfile.detect(multimediaInstalled = false, fingerprint = "BYD-AUTO/DiLink/x"))
     }
 
+    @Test fun theLeapmotorProfileLeavesTheCarsAdbAndRootAlone() {
+        assertFalse(VehicleProfile.LEAPMOTOR_C01.localAdbHelpers)
+        assertTrue(VehicleProfile.GENERIC.localAdbHelpers)
+        assertTrue(VehicleProfile.BYD_DILINK.localAdbHelpers)
+        assertTrue(VehicleProfile.LEAPMOTOR_C01.transportOnlyMedia)
+        assertFalse(VehicleProfile.GENERIC.transportOnlyMedia)
+    }
+
     @Test fun choosingLeapmotorOnADetectedLeapmotorIsNoChange() {
         detected = VehicleProfile.LEAPMOTOR_C01
         assertNull(store().chosen())

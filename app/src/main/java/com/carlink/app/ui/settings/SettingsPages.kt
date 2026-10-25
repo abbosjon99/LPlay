@@ -110,7 +110,8 @@ private fun ConnectionEssentials(ui: SettingsUi, actions: SettingsActions, openS
                 description = if (ui.stereoBluetoothFyt) detail + "\n" + stringResource(R.string.carlink_settings_external_bt_fyt_note) else detail,
                 icon = R.drawable.carlink_ic_bluetooth)
         }
-        if (ui.unified.showAdvanced) {
+        // LPlay: no root helpers on the Leapmotor C01 (VehicleProfile.localAdbHelpers).
+        if (ui.unified.showAdvanced && ((ui.carBrand ?: ui.detectedBrand)?.profile?.localAdbHelpers != false)) {
             GroupDivider()
             SwitchRow(stringResource(R.string.carlink_settings_root), c.rootMode, actions::setRootMode,
                 description = stringResource(R.string.carlink_settings_root_detail), icon = R.drawable.carlink_ic_lock)

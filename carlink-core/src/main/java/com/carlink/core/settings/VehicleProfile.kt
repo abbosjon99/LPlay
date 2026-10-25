@@ -32,6 +32,13 @@ enum class VehicleProfile {
      */
     val transportOnlyMedia: Boolean get() = this == LEAPMOTOR_C01
 
+    /**
+     * LPlay: whether CarLink may reach for the head unit's own adb or for root (VPN pre-consent, the car hotspot read and
+     * write). Not on the Leapmotor C01: its adbd is the owner's to switch on and off, nothing in the app depends on it, and
+     * the write path can raise the car's "Allow debugging?" prompt while someone drives.
+     */
+    val localAdbHelpers: Boolean get() = this != LEAPMOTOR_C01
+
     companion object {
         /** The car's own multimedia app; its presence is how a Leapmotor head unit is told from a phone or tablet. */
         const val LEAPMOTOR_MULTIMEDIA_PACKAGE = "com.leapmotor.multimedia"

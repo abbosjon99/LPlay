@@ -89,6 +89,12 @@
         <service
             android:name="com.shilapi.xcertplay.WheelKeyService"
             tools:node="remove" />
+        <!-- DiPlay's adb cluster activity is exported in its manifest; LPlay never starts it (the window is
+             uz.carhelper.lplay.cluster.CarPlayClusterActivity), and nothing else should. -->
+        <activity
+            android:name="com.shilapi.xcertplay.AdbClusterActivity"
+            android:exported="false"
+            tools:replace="android:exported" />
 
         <!-- Shares Diagnostics' connection log (cache/shared only); independent of the engines' providers. -->
         <provider
