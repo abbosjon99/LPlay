@@ -20,7 +20,7 @@
     <string name="carlink_setup_plan_access">Allow access</string>
     <string name="carlink_setup_plan_access_detail">Bluetooth, Wi-Fi and a few switches, all at once</string>
     <string name="carlink_setup_plan_car">Choose your car</string>
-    <string name="carlink_setup_plan_car_detail">Its brand; a BYD gets its DiLink extras</string>
+    <string name="carlink_setup_plan_car_detail">Its brand; a Leapmotor gets the dashboard map</string>
     <string name="carlink_setup_plan_pair">Pair your phone</string>
     <string name="carlink_setup_plan_pair_detail">Once, from the phone’s Bluetooth settings</string>
 
