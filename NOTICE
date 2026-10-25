@@ -32,7 +32,8 @@ Ideas credited
 Parts that are not under the AGPL
 ---------------------------------
 - The BYD HUD manoeuvre icons (BYDMate, (c) AndyShaman, PolyForm Noncommercial License 1.0.0) are in the CarLink
-  tree and are not covered by the AGPL. They are used only by the BYD integrations, which LPlay never turns on.
+  tree and are not covered by the AGPL. They are used only by the BYD integrations, which LPlay never turns on, so
+  LPlay builds do not package them (build with -Plplay.bydIcons=true to include them again).
 
 Source
 ------

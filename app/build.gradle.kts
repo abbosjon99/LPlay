@@ -34,6 +34,9 @@ abstract class CarLinkLicenseAssets : DefaultTask() {
     }
 }
 
+// LPlay: package the BYD HUD icons only on request (-Plplay.bydIcons=true).
+val lplayBydIcons: Boolean = providers.gradleProperty("lplay.bydIcons").orNull == "true"
+
 /** `major.minor.patch` → major * 10000 + minor * 100 + patch (see defaultConfig). */
 fun carLinkVersionCode(name: String): Int {
     val parts = Regex("""(\d{1,4})\.(\d{1,2})\.(\d{1,2})""").matchEntire(name)?.destructured?.toList()
@@ -67,6 +70,7 @@ android {
         versionName = "0.1.0" // LPlay: its own number; the CarLink release it is based on is in NOTICE and About
         versionCode = carLinkVersionCode(versionName!!)
         buildConfigField("String", "DIPLAY_VERSION_NAME", "\"$diPlayVersionName\"")
+        buildConfigField("boolean", "BYD_ICONS_PACKAGED", lplayBydIcons.toString()) // LPlay
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // The Android Auto engine library ships two distribution flavors; CarLink uses github.
@@ -125,6 +129,9 @@ android {
     // translations). Remove this filter and extend xml/locales_config.xml to bring them back.
     androidResources {
         localeFilters += listOf("en")
+        // LPlay: the BYD HUD icons (BYDMate, PolyForm Noncommercial) stay in the source tree but are not packaged: only the BYD
+        // HUD output uses them, and LPlay never turns that on. Build with -Plplay.bydIcons=true to bring them back.
+        if (!lplayBydIcons) ignoreAssetsPatterns += "!byd-hud-icons"
     }
 
     packaging {

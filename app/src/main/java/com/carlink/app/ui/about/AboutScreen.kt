@@ -402,15 +402,19 @@ private fun ColumnScope.LicensesContent(onRead: (String) -> Unit) {
         LinkRow(stringResource(R.string.carlink_about_read_agpl), { onRead(AppInfo.AGPL_ASSET) }, icon = R.drawable.carlink_ic_description)
         GroupDivider()
         LinkRow(stringResource(R.string.carlink_about_read_gpl), { onRead(AppInfo.GPL_ASSET) }, icon = R.drawable.carlink_ic_description)
-        GroupDivider()
-        LinkRow(stringResource(R.string.carlink_about_read_bydmate), { onRead(AppInfo.BYDMATE_ASSET) }, icon = R.drawable.carlink_ic_description)
+        if (com.carlink.app.BuildConfig.BYD_ICONS_PACKAGED) { // LPlay: the BYD icons are not in this build
+            GroupDivider()
+            LinkRow(stringResource(R.string.carlink_about_read_bydmate), { onRead(AppInfo.BYDMATE_ASSET) }, icon = R.drawable.carlink_ic_description)
+        }
     }
     Spacer(Modifier.height(CarLinkTokens.dimens.gutter))
     GroupHeader(stringResource(R.string.carlink_about_components))
     Spacer(Modifier.height(4.dp))
     CreditItem(stringResource(R.string.carlink_about_lic_diplay_name), stringResource(R.string.carlink_about_lic_diplay))
     CreditItem(stringResource(R.string.carlink_about_lic_diauto_name), stringResource(R.string.carlink_about_lic_diauto))
-    CreditItem(stringResource(R.string.carlink_about_lic_bydmate_name), stringResource(R.string.carlink_about_lic_bydmate))
+    if (com.carlink.app.BuildConfig.BYD_ICONS_PACKAGED) { // LPlay
+        CreditItem(stringResource(R.string.carlink_about_lic_bydmate_name), stringResource(R.string.carlink_about_lic_bydmate))
+    }
     CreditItem(stringResource(R.string.carlink_about_lic_ffmpeg_name), stringResource(R.string.carlink_about_lic_ffmpeg))
     CreditItem(stringResource(R.string.carlink_about_lic_libusb_name), stringResource(R.string.carlink_about_lic_libusb))
     CreditItem(stringResource(R.string.carlink_about_lic_speex_name), stringResource(R.string.carlink_about_lic_speex))
@@ -431,7 +435,9 @@ private fun ColumnScope.CreditsContent() {
     CreditItem(stringResource(R.string.carlink_about_lic_diauto_name), stringResource(R.string.carlink_about_credit_diauto))
     CreditItem(stringResource(R.string.carlink_about_credit_openheadunit_name), stringResource(R.string.carlink_about_credit_openheadunit))
     CreditItem(stringResource(R.string.carlink_about_credit_headunit_name), stringResource(R.string.carlink_about_credit_headunit))
-    CreditItem(stringResource(R.string.carlink_about_credit_bydmate_name), stringResource(R.string.carlink_about_credit_bydmate))
+    if (com.carlink.app.BuildConfig.BYD_ICONS_PACKAGED) { // LPlay
+        CreditItem(stringResource(R.string.carlink_about_credit_bydmate_name), stringResource(R.string.carlink_about_credit_bydmate))
+    }
     CreditItem(stringResource(R.string.carlink_about_credit_symbols_name), stringResource(R.string.carlink_about_credit_symbols))
 }
 

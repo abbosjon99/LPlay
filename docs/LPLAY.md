@@ -22,19 +22,22 @@ code looks the way it does is in the DiPlay LP notes (`FINDINGS.md` of the DiPla
 | Cluster, CarPlay | the CarPlay map goes to the instrument cluster: display `local:131` (logical id 2), a transparent **720x720** window at the top right, no ADB, no input. The iPhone is asked for a stream of exactly that size. Settings > Car > Instrument cluster: on/off (off by default), the fade, a test card. |
 | Cluster, Android Auto | the same window, fed by Android Auto's second video sink (type CLUSTER). Android Auto only offers fixed codec sizes, so the picture is a 1280x720 frame of which the window shows the middle 720 columns. Two ways to ask the phone: *square with side margins* (560 px of width margin) or *full picture, middle shown*. **Experimental: untested with a phone.** |
 | Left-edge fade | the map's left edge fades into the car's own cluster picture (off / 10 / 20 / 27 / 35 %, default 20 %), done by taking alpha off the video itself (works on a TextureView only). Idea from the C11 fork by w012w012, new code. |
-| Car buttons | Settings > Car > Car buttons: a **recorder** that writes down the wheel, voice and phone broadcasts and key events for 15 minutes, and **Learn** for the answer-call, hang-up and assistant buttons. A learned button then answers or ends the CarPlay or Android Auto call or starts Siri / the assistant. Listening only: it never aborts a broadcast, so the car's own apps and LP Music see every button as before. |
+| Car buttons | Settings > Car > Car buttons: a **recorder** that writes down the wheel, voice and phone broadcasts and key events for 15 minutes, and **Learn** for the answer-call, hang-up and assistant buttons. A learned button can then answer or end the CarPlay or Android Auto call or start Siri / the assistant, but only after "Let the learned buttons act" is switched on; **it is off by default**, so a button can be learned and recorded without anything reaching the phone. Listening only: it never aborts a broadcast, so the car's own apps and LP Music see every button as before. |
 | ADB, root | the head unit's adb and root are not used on this profile: no silent VPN pre-consent over adb, no car-hotspot import or write through adb or root, the root switch is hidden. The VPN and hotspot paths use Android's own dialogs and the typed SSID and password. |
 | Tests | a Windows path-separator test is made portable; new tests cover the profile, the settings mapping, the cluster display rules, the fade, the AA geometry and square profile, and the car-button signatures. |
 
 ### Not in LPlay (yet)
 
-- **Vehicle data** (battery, range, speed, tyre pressure, outside temperature for the side panel). The DiPlay LP fork read these
-  from `android.car`; the property ids were never confirmed on a C01, and CarLink's engine reads BYD's APIs directly at seven
-  places that would need a hook. Left out until a probe on the car shows what it answers.
-- **A Leapmotor HUD** (your car has none) and the **Leapmotor call-popup hider** (needs a capture of how `com.leapmotor.phone`
-  shows its popup).
+- **Vehicle data** (battery, range, speed, outside temperature for the side panel): dropped. The cluster already shows them.
+  To think about later: **tyre pressure** (the car's launcher widget shows it; an ordinary app cannot read it from the car),
+  **average fuel** and **speed in km/h**. CarLink's engine reads BYD's APIs directly at seven places, so any of these needs a
+  small hook there, and the `android.car` property ids were never confirmed on a C01.
+- **A Leapmotor HUD** (your car has none) and the **Leapmotor call-popup hider**. The BYD one exists because the car's own
+  Bluetooth phone app puts its call screen over CarPlay's; whether `com.leapmotor.phone` does the same is for test step 10.
 - **The activation signal** some Leapmotor firmware may need before the cluster shows an app window (SOME/IP `gaode_pub` event
-  1090 in other projects). Not implemented; decide after test steps 3 and 4.
+  1090 in other projects; they skip it when the car's own `com.leapmotor.autonavi` already owns it). Not implemented: LPlay's
+  window opens on the cluster display over the car's own map (it takes the window back at most three times a minute if the map
+  covers it). Needed only if the cluster stays blank while the car's navigation is idle; see test steps 3 and 4.
 - Everything BYD-only is still in the code (CarLink's own BYD profile, HUD and cluster routes); LPlay just never turns it on.
   Removing it would make every CarLink update a hand merge.
 
@@ -105,7 +108,7 @@ security settings. Take a screenshot before touching anything. Stop at the first
    play/pause, next, previous, the voice (speak) button, the answer/hang-up button. Then Share the recording. If the voice or
    answer button leaves no line, run `adb shell dumpsys activity broadcasts` right after pressing it.
 8. **Learn the buttons.** For Answer, Hang-up and Assistant: tap the row, press the car's button within 20 s; the row shows what it
-   learned. Make a CarPlay call to the iPhone: the learned answer button should answer, the hang-up button end it, the assistant
+   learned. Nothing is sent to the phone yet. Then switch on "Let the learned buttons act" and make a CarPlay call to the iPhone: the learned answer button should answer, the hang-up button end it, the assistant
    button start Siri. Note whether the car's own phone popup also appears over CarPlay, and whether LP Music still reacts to its
    own buttons. Repeat the three with an Android phone.
 9. **Android Auto on the cluster** (experimental). Choose the picture mode "Square with side margins", connect an Android phone with
@@ -117,10 +120,11 @@ security settings. Take a screenshot before touching anything. Stop at the first
 
 ## Open decisions
 
-- Whether to supply the CarPlay accessory identity (above).
 - The activation signal for the cluster (SOME/IP event 1090), only after test steps 3 and 4.
-- Whether LPlay gets a mark of its own: the launcher icon is still CarLink's.
-- Where LPlay's source lives: the AGPL entitles every recipient of a build to the complete source (CarLink at the pinned tag plus
-  the patch series). Publishing the patcher, or the fork, is your decision; nothing is pushed.
-- The BYD HUD icons in the CarLink tree are licensed PolyForm Noncommercial and are not covered by the AGPL; LPlay never shows them.
-  Say if you want them deleted from the tree.
+- Which of tyre pressure, average fuel and speed to bring back, and from where (above).
+- Publishing: a fork of CarLink on your GitHub account with the patch series (never the identity files), and a release once the
+  parked-car tests have been done. The AGPL entitles every recipient of a build to the complete source (CarLink at the pinned tag
+  plus the patch series); nothing is pushed until you say so.
+- The launcher icon is still CarLink's mark; fine for now.
+- The BYD HUD icons (PolyForm Noncommercial, not covered by the AGPL) stay in the source tree but are **not packaged** in LPlay
+  builds. To bring them back later, build with `-Plplay.bydIcons=true`; About then lists them again.
